@@ -391,9 +391,177 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Popup d'accueil Docteur */
+        .welcome-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .welcome-popup.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 25px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            color: white;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            transform: scale(0.8) translateY(50px);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .welcome-popup.show .welcome-card {
+            transform: scale(1) translateY(0);
+        }
+
+        .welcome-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .welcome-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .welcome-features {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .welcome-features h4 {
+            margin-bottom: 15px;
+            color: #7ee4e6;
+            font-size: 1.1rem;
+        }
+
+        .welcome-features ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .welcome-features li {
+            margin: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            text-align: left;
+        }
+
+        .welcome-features li::before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .welcome-progress {
+            background: rgba(255, 255, 255, 0.2);
+            height: 4px;
+            border-radius: 2px;
+            margin: 20px 0 10px;
+            overflow: hidden;
+        }
+
+        .welcome-progress-bar {
+            background: linear-gradient(90deg, #7ee4e6 0%, #5bed98 100%);
+            height: 100%;
+            width: 0%;
+            border-radius: 2px;
+            animation: progressFill 6s ease-out;
+        }
+
+        .welcome-timer {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-top: 10px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes progressFill {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+                transform: scale(0.9) translateY(-20px);
+            }
+        }
+
+        .welcome-popup.fade-out {
+            animation: fadeOut 0.5s ease forwards;
+        }
     </style>
 </head>
 <body>
+    <!-- Popup d'accueil Docteur Pharmacien -->
+    <div class="welcome-popup" id="welcomePopup">
+        <div class="welcome-card">
+            <span class="welcome-icon">👨‍⚕️</span>
+            <h2 class="welcome-title">Bienvenue Docteur !</h2>
+            <p class="welcome-subtitle">
+                Votre système de gestion de pharmacie est prêt à l'emploi
+            </p>
+            
+            <div class="welcome-features">
+                <h4>🚀 Votre tableau de bord vous permet de :</h4>
+                <ul>
+                    <li>Superviser toute votre activité en temps réel</li>
+                    <li>Gérer vos achats et fournisseurs</li>
+                    <li>Suivre vos ventes et votre équipe</li>
+                    <li>Contrôler votre stock et les péremptions</li>
+                    <li>Exporter vos données en toute sécurité</li>
+                </ul>
+            </div>
+
+            <div class="welcome-progress">
+                <div class="welcome-progress-bar"></div>
+            </div>
+            <div class="welcome-timer">
+                Redirection automatique dans <span id="countdown">6</span> secondes...
+            </div>
+        </div>
+    </div>
+
     <!-- Indicateur de progression -->
     <div class="progress-indicator">
         <div class="progress-bar" id="progressBar"></div>
@@ -1216,7 +1384,7 @@
             <!-- Footer -->
             <div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.8);">
                 <p>📚 Documentation créée pour faciliter l'utilisation du système de gestion de pharmacie</p>
-                <p style="font-size: 0.9rem; opacity: 0.7;">Version 7.1 - Guide complet pour pharmaciens</p>
+                <p style="font-size: 0.9rem; opacity: 0.7;">Version 1.0 - Guide complet pour débutants</p>
             </div>
         </div>
     </div>
@@ -1298,6 +1466,9 @@
 
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
+            // Afficher la popup d'accueil
+            showWelcomePopup();
+            
             // Écouteurs d'événements
             window.addEventListener('scroll', updateProgressBar);
             window.addEventListener('resize', handleResize);
@@ -1324,6 +1495,57 @@
             // Mise à jour initiale de la barre de progression
             updateProgressBar();
         });
+
+        // Gestion de la popup d'accueil
+        function showWelcomePopup() {
+            const popup = document.getElementById('welcomePopup');
+            const countdownElement = document.getElementById('countdown');
+            let timeLeft = 6;
+
+            // Afficher la popup
+            setTimeout(() => {
+                popup.classList.add('show');
+            }, 500);
+
+            // Countdown
+            const timer = setInterval(() => {
+                timeLeft--;
+                if (countdownElement) {
+                    countdownElement.textContent = timeLeft;
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    hideWelcomePopup();
+                }
+            }, 1000);
+
+            // Permettre de fermer en cliquant sur la popup
+            popup.addEventListener('click', (e) => {
+                if (e.target === popup) {
+                    clearInterval(timer);
+                    hideWelcomePopup();
+                }
+            });
+
+            // Permettre de fermer avec Escape
+            document.addEventListener('keydown', function escapeHandler(e) {
+                if (e.key === 'Escape') {
+                    clearInterval(timer);
+                    hideWelcomePopup();
+                    document.removeEventListener('keydown', escapeHandler);
+                }
+            });
+        }
+
+        function hideWelcomePopup() {
+            const popup = document.getElementById('welcomePopup');
+            popup.classList.add('fade-out');
+            
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 500);
+        }
 
         // Fonction utilitaire pour copier du texte
         function copyToClipboard(text) {
