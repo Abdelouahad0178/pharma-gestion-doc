@@ -392,14 +392,14 @@
             }
         }
 
-        /* Popup d'accueil Docteur */
+        /* Popup d'accueil Docteur avec animations d'étoiles */
         .welcome-popup {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: radial-gradient(ellipse at center, #1a237e 0%, #000051 70%, #000000 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -407,6 +407,7 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.5s ease;
+            overflow: hidden;
         }
 
         .welcome-popup.show {
@@ -414,18 +415,101 @@
             visibility: visible;
         }
 
+        /* Étoiles de fond */
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+        }
+
+        .star.large {
+            width: 4px;
+            height: 4px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        .star.medium {
+            width: 3px;
+            height: 3px;
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Étoiles filantes */
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: linear-gradient(45deg, #fff, transparent);
+            border-radius: 50%;
+            animation: shooting 3s linear infinite;
+        }
+
+        .shooting-star::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.8), transparent);
+            left: -50px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Particules magiques */
+        .magic-particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: radial-gradient(circle, #ffd700, #ffeb3b);
+            border-radius: 50%;
+            animation: float-up 4s ease-out infinite;
+            opacity: 0;
+        }
+
+        .magic-particle.sparkle {
+            background: radial-gradient(circle, #e3f2fd, #90caf9);
+            animation: sparkle-float 3s ease-out infinite;
+        }
+
         .welcome-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
             border-radius: 25px;
             padding: 40px;
             max-width: 500px;
             width: 90%;
             text-align: center;
             color: white;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 0 50px rgba(102, 126, 234, 0.3);
             transform: scale(0.8) translateY(50px);
             transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
         }
 
         .welcome-popup.show .welcome-card {
@@ -436,14 +520,18 @@
             font-size: 4rem;
             margin-bottom: 20px;
             display: block;
-            animation: float 3s ease-in-out infinite;
+            animation: float-bounce 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(126, 228, 230, 0.5));
         }
 
         .welcome-title {
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 15px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            text-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(255, 255, 255, 0.2);
+            animation: glow-pulse 2s ease-in-out infinite alternate;
         }
 
         .welcome-subtitle {
@@ -451,21 +539,33 @@
             opacity: 0.9;
             margin-bottom: 25px;
             line-height: 1.4;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
         }
 
         .welcome-features {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.15);
             border-radius: 15px;
             padding: 20px;
             margin: 20px 0;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-features::after {
+            content: '✨';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            animation: rotate-sparkle 4s linear infinite;
         }
 
         .welcome-features h4 {
             margin-bottom: 15px;
             color: #7ee4e6;
             font-size: 1.1rem;
+            text-shadow: 0 0 10px rgba(126, 228, 230, 0.5);
         }
 
         .welcome-features ul {
@@ -478,40 +578,156 @@
             padding-left: 25px;
             position: relative;
             text-align: left;
+            animation: slide-in-left 0.6s ease forwards;
+            opacity: 0;
         }
 
+        .welcome-features li:nth-child(1) { animation-delay: 0.2s; }
+        .welcome-features li:nth-child(2) { animation-delay: 0.4s; }
+        .welcome-features li:nth-child(3) { animation-delay: 0.6s; }
+        .welcome-features li:nth-child(4) { animation-delay: 0.8s; }
+        .welcome-features li:nth-child(5) { animation-delay: 1.0s; }
+
         .welcome-features li::before {
-            content: "✨";
+            content: "⭐";
             position: absolute;
             left: 0;
             top: 0;
+            animation: star-twinkle 2s infinite;
         }
 
         .welcome-progress {
             background: rgba(255, 255, 255, 0.2);
-            height: 4px;
-            border-radius: 2px;
+            height: 6px;
+            border-radius: 3px;
             margin: 20px 0 10px;
             overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .welcome-progress-bar {
-            background: linear-gradient(90deg, #7ee4e6 0%, #5bed98 100%);
+            background: linear-gradient(90deg, #7ee4e6 0%, #5bed98 50%, #ffd700 100%);
             height: 100%;
             width: 0%;
-            border-radius: 2px;
-            animation: progressFill 6s ease-out;
+            border-radius: 3px;
+            animation: progressFill 15s ease-out;
+            box-shadow: 0 0 10px rgba(126, 228, 230, 0.5);
+            position: relative;
+        }
+
+        .welcome-progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -50px;
+            width: 50px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+            animation: progress-shine 2s infinite;
         }
 
         .welcome-timer {
             font-size: 0.9rem;
-            opacity: 0.7;
+            opacity: 0.8;
             margin-top: 10px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+        /* Animations */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        @keyframes shooting {
+            0% { 
+                transform: translateX(-100px) translateY(-100px);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { 
+                transform: translateX(100vw) translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(100px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes sparkle-float {
+            0% {
+                transform: translateY(50px) scale(0);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(30px) scale(1);
+            }
+            80% {
+                opacity: 1;
+                transform: translateY(-30px) scale(1);
+            }
+            100% {
+                transform: translateY(-50px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes float-bounce {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-10px) rotate(5deg); }
+            66% { transform: translateY(5px) rotate(-5deg); }
+        }
+
+        @keyframes glow-pulse {
+            from { text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.2); }
+            to { text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 30px rgba(126, 228, 230, 0.4); }
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes rotate-sparkle {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes slide-in-left {
+            from { 
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes star-twinkle {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.3) rotate(180deg); }
+        }
+
+        @keyframes progress-shine {
+            0% { left: -50px; }
+            100% { left: 100%; }
         }
 
         @keyframes progressFill {
@@ -533,13 +749,16 @@
     </style>
 </head>
 <body>
-    <!-- Popup d'accueil Docteur Pharmacien -->
+    <!-- Popup d'accueil Docteur Pharmacien avec étoiles animées -->
     <div class="welcome-popup" id="welcomePopup">
+        <!-- Étoiles de fond -->
+        <div class="stars" id="starsContainer"></div>
+        
         <div class="welcome-card">
             <span class="welcome-icon">👨‍⚕️</span>
             <h2 class="welcome-title">Bienvenue Docteur !</h2>
             <p class="welcome-subtitle">
-                Votre système de gestion de pharmacie est prêt à l'emploi
+                ✨ Votre système de gestion de pharmacie est prêt à l'emploi ✨
             </p>
             
             <div class="welcome-features">
@@ -557,7 +776,7 @@
                 <div class="welcome-progress-bar"></div>
             </div>
             <div class="welcome-timer">
-                Redirection automatique dans <span id="countdown">6</span> secondes...
+                🎉 Redirection automatique dans <span id="countdown">15</span> secondes... 🎊
             </div>
         </div>
     </div>
@@ -1496,11 +1715,16 @@
             updateProgressBar();
         });
 
-        // Gestion de la popup d'accueil
+        // Gestion de la popup d'accueil avec animations d'étoiles
         function showWelcomePopup() {
             const popup = document.getElementById('welcomePopup');
             const countdownElement = document.getElementById('countdown');
-            let timeLeft = 6;
+            let timeLeft = 15;
+
+            // Créer les étoiles animées
+            createStars();
+            createShootingStars();
+            createMagicParticles();
 
             // Afficher la popup
             setTimeout(() => {
@@ -1536,6 +1760,98 @@
                     document.removeEventListener('keydown', escapeHandler);
                 }
             });
+        }
+
+        // Créer les étoiles de fond
+        function createStars() {
+            const starsContainer = document.getElementById('starsContainer');
+            const starCount = 100;
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // Différentes tailles d'étoiles
+                const size = Math.random();
+                if (size > 0.8) star.classList.add('large');
+                else if (size > 0.5) star.classList.add('medium');
+
+                // Position aléatoire
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                
+                // Délai d'animation aléatoire
+                star.style.animationDelay = Math.random() * 3 + 's';
+                
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Créer les étoiles filantes
+        function createShootingStars() {
+            const starsContainer = document.getElementById('starsContainer');
+            
+            function addShootingStar() {
+                const shootingStar = document.createElement('div');
+                shootingStar.className = 'shooting-star';
+                
+                // Position de départ aléatoire
+                shootingStar.style.left = Math.random() * 100 + '%';
+                shootingStar.style.top = Math.random() * 50 + '%';
+                
+                starsContainer.appendChild(shootingStar);
+                
+                // Supprimer l'étoile après l'animation
+                setTimeout(() => {
+                    if (shootingStar.parentNode) {
+                        shootingStar.parentNode.removeChild(shootingStar);
+                    }
+                }, 3000);
+            }
+
+            // Ajouter des étoiles filantes périodiquement
+            const shootingInterval = setInterval(addShootingStar, 2000);
+            
+            // Nettoyer l'intervalle quand la popup se ferme
+            setTimeout(() => {
+                clearInterval(shootingInterval);
+            }, 16000);
+        }
+
+        // Créer les particules magiques
+        function createMagicParticles() {
+            const starsContainer = document.getElementById('starsContainer');
+            
+            function addMagicParticle() {
+                const particle = document.createElement('div');
+                particle.className = 'magic-particle';
+                
+                // 50% de chance d'être une particule scintillante
+                if (Math.random() > 0.5) {
+                    particle.classList.add('sparkle');
+                }
+                
+                // Position aléatoire en bas de l'écran
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.bottom = '-10px';
+                
+                starsContainer.appendChild(particle);
+                
+                // Supprimer la particule après l'animation
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                }, 4000);
+            }
+
+            // Ajouter des particules magiques périodiquement
+            const particleInterval = setInterval(addMagicParticle, 800);
+            
+            // Nettoyer l'intervalle quand la popup se ferme
+            setTimeout(() => {
+                clearInterval(particleInterval);
+            }, 16000);
         }
 
         function hideWelcomePopup() {
