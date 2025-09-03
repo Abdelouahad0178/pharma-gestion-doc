@@ -581,59 +581,66 @@
                 </div>
             </section>
 
-            <!-- Section Achats -->
+            <!-- Section Achats (mise à jour pour coller à Achats.js) -->
             <section class="section" id="achats">
                 <div class="section-header">
                     <span>🛒</span>
                     <span>Module Achats (Docteur uniquement)</span>
                 </div>
                 <div class="section-content">
-                    <div class="warning"><strong>🚫 Accès restreint :</strong> ce module n'est accessible qu'aux pharmaciens.</div>
+                    <div class="warning"><strong>🚫 Accès restreint :</strong> ce module n'est accessible qu'aux pharmaciens (owner).</div>
 
-                    <h3>Gérer vos achats fournisseurs</h3>
-                    <p>Ce module permet d'enregistrer tous vos achats et de mettre à jour automatiquement votre stock.</p>
+                    <h3>Flux d'achat <em>Commande → Réception</em> (multi-lots)</h3>
+                    <p>Chaque ligne d’article comporte deux volets : <code>commandee</code> (quantités/prix prévus) et <code>recu</code> (quantités/prix réellement reçus). La <strong>réception</strong> met à jour le stock <strong>par lots</strong> et le <strong>statut de réception</strong>.</p>
 
                     <div class="step">
-                        <h4>📦 Créer un bon d'achat</h4>
-                        <p><strong>1.</strong> Cliquez sur "Nouveau Bon d'Achat"</p>
-                        <p><strong>2.</strong> Sélectionnez ou créez un fournisseur</p>
-                        <p><strong>3.</strong> Ajoutez les informations générales :</p>
-                        <ul style="padding-left: 20px;">
-                            <li>Numéro de facture fournisseur</li>
-                            <li>Date d'achat</li>
-                            <li>Notes éventuelles</li>
+                        <h4>📦 Créer un bon d'achat (COMMANDE)</h4>
+                        <p><strong>1.</strong> Cliquez sur <em>Nouveau Bon d’Achat</em></p>
+                        <p><strong>2.</strong> Renseignez : <em>Fournisseur</em>, <em>Date d’achat</em>, <em>Remise globale</em>, <em>Statut de paiement</em> (Payé / Impayé / Partiel)</p>
+                        <p><strong>3.</strong> Ajoutez des articles. Pour chaque ligne :</p>
+                        <ul style="padding-left:20px">
+                            <li>Produit existant <em>ou</em> nouveau produit</li>
+                            <li>Quantité <em>commandée</em></li>
+                            <li>Prix d’achat (ou prix unitaire)</li>
+                            <li>Prix de vente (optionnel)</li>
+                            <li>Remise par article (optionnel)</li>
+                            <li>Date de péremption & Numéro de lot (si vide, peut être généré)</li>
                         </ul>
+                        <div class="info"><strong>Automatisation :</strong> si le <em>Statut de paiement</em> est <em>Payé</em> à l’enregistrement, un <strong>paiement “Achats”</strong> est créé automatiquement pour le montant total, et une <em>activité</em> est journalisée.</div>
                     </div>
 
                     <div class="step">
-                        <h4>🏷️ Ajouter des produits</h4>
-                        <p><strong>Pour chaque produit acheté :</strong></p>
-                        <ul style="padding-left: 20px;">
-                            <li>Nom du produit (ou créer un nouveau)</li>
-                            <li>Quantité achetée</li>
-                            <li>Prix d'achat unitaire</li>
-                            <li>Prix de vente prévu</li>
-                            <li><strong>Date de péremption</strong></li>
-                            <li><strong>Numéro de lot</strong></li>
+                        <h4>📥 Réception (contrôle des quantités réellement reçues)</h4>
+                        <p>Sur un bon au statut <em>réception = en_attente</em>, cliquez <em>Démarrer la réception</em> puis ajustez la partie <code>recu</code> : quantité reçue, prix d’achat, remise, numéro de lot, etc.</p>
+                        <p>À la soumission, le système calcule le <strong>statut de réception</strong> :</p>
+                        <ul style="padding-left:20px">
+                            <li><strong>reçu</strong> : tout reçu</li>
+                            <li><strong>partiel</strong> : une partie reçue</li>
+                            <li><strong>annulé</strong> : rien reçu</li>
                         </ul>
+                        <p>En cas de réception (totale/partielle), des entrées <code>stock_entries</code> <strong>par lot</strong> sont ajoutées et le stock traditionnel est synchronisé. Une activité <em>reception_achat</em> est enregistrée.</p>
                     </div>
 
                     <div class="step">
-                        <h4>✅ Validation et mise à jour stock</h4>
-                        <p><strong>Quand vous validez l'achat :</strong></p>
-                        <ul style="padding-left: 20px;">
-                            <li>Le bon d'achat est enregistré</li>
-                            <li>Le stock est automatiquement mis à jour</li>
-                            <li>Chaque produit devient disponible pour la vente</li>
-                            <li>Les lots sont tracés individuellement</li>
+                        <h4>🖨️ Impression pro (Bon de Commande / Réception)</h4>
+                        <p>Impressions <em>mobile-friendly</em> avec entête/pied personnalisés. <strong>Cachet</strong> : image (logo) ou <em>cachet texte</em> circulaire. Zone de signature incluse.</p>
+                    </div>
+
+                    <div class="step">
+                        <h4>🔎 Filtres et recherche (historique Achats)</h4>
+                        <ul style="padding-left:20px">
+                            <li>Fournisseur</li>
+                            <li>Médicament / Produit</li>
+                            <li>Période (date min / date max)</li>
+                            <li>Statut de réception (en_attente / partiel / reçu / annulé)</li>
                         </ul>
                     </div>
 
-                    <div class="highlight"><strong>🎯 Pourquoi c'est important :</strong> tous les achats alimentent automatiquement votre stock.</div>
+                    <div class="highlight"><strong>Rappels :</strong> la <em>modification</em> d’un bon conserve l’historique; la <em>suppression</em> nettoie les entrées de stock liées. Toutes les actions majeures sont journalisées dans <em>activities</em>.</div>
                 </div>
             </section>
 
-            <!-- Section Stock -->
+           <!-- Section Stock -->
             <section class="section" id="stock">
                 <div class="section-header">
                     <span>📦</span>
