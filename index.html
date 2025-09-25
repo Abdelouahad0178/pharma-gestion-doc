@@ -3,1223 +3,1202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guide d'utilisation - Système de Gestion de Pharmacie</title>
+    <title>Guide Utilisateur - Système de Gestion de Pharmacie</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏥%3C/text%3E%3C/svg%3E">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #4CAF50;
+            --danger: #f56565;
+            --warning: #ed8936;
+            --info: #4299e1;
+            --dark: #2d3748;
+            --light: #f7fafc;
+            --border: #e2e8f0;
+            --text: #2d3748;
+            --text-muted: #718096;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #2d3748;
             line-height: 1.6;
+            color: var(--text);
+            background: var(--light);
+            scroll-behavior: smooth;
         }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-
+        /* Header */
         .header {
-            text-align: center; margin-bottom: 40px; color: white;
-            padding: 40px 20px; background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px; backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: var(--gradient);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
         }
 
-        .header h1 { font-size: 2.5rem; margin-bottom: 15px; font-weight: 700; }
-        .header p { font-size: 1.2rem; opacity: 0.9; }
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
 
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Navigation */
+        .nav-container {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            margin-left: auto;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-menu a.active {
+            background: var(--gradient);
+            color: white;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 3rem;
+        }
+
+        /* Sidebar */
         .sidebar {
-            position: fixed; left: 0; top: 0; width: 280px; height: 100vh;
-            background: linear-gradient(180deg, #2d3748 0%, #1a202c 100%);
-            padding: 20px; overflow-y: auto; z-index: 1000;
-            transform: translateX(-100%); transition: transform 0.3s ease;
+            position: sticky;
+            top: 120px;
+            height: fit-content;
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: var(--shadow);
         }
-        .sidebar.open { transform: translateX(0); }
-        .sidebar h3 { color: #7ee4e6; margin-bottom: 20px; font-size: 1.1rem; padding-bottom: 10px; border-bottom: 1px solid #4a5568; }
-        .sidebar ul { list-style: none; }
-        .sidebar li { margin-bottom: 8px; }
+
+        .sidebar h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 0.5rem;
+        }
+
         .sidebar a {
-            color: #e1e6ef; text-decoration: none; display: block; padding: 10px 15px;
-            border-radius: 8px; transition: all 0.3s ease; font-size: 0.9rem;
+            text-decoration: none;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.95rem;
         }
-        .sidebar a:hover { background: rgba(126, 228, 230, 0.1); color: #7ee4e6; transform: translateX(5px); }
 
-        .menu-toggle {
-            position: fixed; top: 20px; left: 20px; background: rgba(45, 55, 72, 0.9);
-            color: white; border: none; padding: 12px; border-radius: 50%; cursor: pointer;
-            z-index: 1001; font-size: 20px; transition: all 0.3s ease;
+        .sidebar a:hover {
+            background: var(--gradient);
+            color: white;
+            transform: translateX(5px);
         }
-        .menu-toggle:hover { background: rgba(45, 55, 72, 1); transform: scale(1.1); }
 
-        .content { margin-left: 0; transition: margin-left 0.3s ease; padding: 20px; }
-        .content.shifted { margin-left: 280px; }
+        .sidebar a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
 
         .section {
-            background: white; margin-bottom: 30px; border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); overflow: hidden; animation: fadeInUp 0.6s ease;
+            padding: 3rem;
+            border-bottom: 1px solid var(--border);
         }
 
-        .section-header {
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-            color: white; padding: 25px 30px; font-size: 1.4rem; font-weight: 600;
-            display: flex; align-items: center; gap: 15px;
+        .section:last-child {
+            border-bottom: none;
         }
 
-        .section-content { padding: 30px; }
+        .section h2 {
+            color: var(--dark);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section h2 i {
+            background: var(--gradient);
+            color: white;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .section h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin: 2rem 0 1rem 0;
+        }
+
+        .section p {
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        /* Role Cards */
+        .role-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .role-card.docteur {
+            border-left: 4px solid var(--accent);
+            background: linear-gradient(135deg, #f0fff4, #f0fff4);
+        }
+
+        .role-card.vendeuse {
+            border-left: 4px solid var(--info);
+            background: linear-gradient(135deg, #f0f8ff, #f0f8ff);
+        }
+
+        .role-card h4 {
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        /* Feature Cards */
+        .feature-card {
+            text-align: center;
+            padding: 2.5rem;
+            border: 2px solid var(--border);
+            border-radius: 1rem;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h4 {
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        /* Steps */
+        .steps {
+            counter-reset: step-counter;
+        }
 
         .step {
-            margin-bottom: 25px; padding: 20px; background: #f8fafc;
-            border-radius: 15px; border-left: 4px solid #667eea;
-        }
-        .step h4 { color: #2d3748; margin-bottom: 10px; font-size: 1.1rem; font-weight: 600; }
-        .step p { color: #4a5568; margin-bottom: 10px; }
-
-        .highlight {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            padding: 15px; border-radius: 10px; border-left: 4px solid #f59e0b; margin: 15px 0;
-        }
-        .warning {
-            background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%);
-            padding: 15px; border-radius: 10px; border-left: 4px solid #ef4444; margin: 15px 0;
-        }
-        .info {
-            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-            padding: 15px; border-radius: 10px; border-left: 4px solid #3b82f6; margin: 15px 0;
+            counter-increment: step-counter;
+            position: relative;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, #fafafa, #f5f5f5);
+            border-radius: 1rem;
+            border-left: 4px solid var(--primary);
         }
 
-        .screenshot {
-            background: #f1f5f9; border: 2px dashed #cbd5e1; border-radius: 10px;
-            padding: 20px; text-align: center; margin: 15px 0; color: #64748b; font-style: italic;
+        .step::before {
+            content: counter(step-counter);
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--gradient);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
         }
 
-        .role-card {
-            background: white; border-radius: 15px; padding: 25px; margin: 15px 0;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); border: 2px solid transparent; transition: all 0.3s ease;
+        .step h4 {
+            color: var(--dark);
+            margin-bottom: 1rem;
+            margin-top: 0.5rem;
         }
-        .role-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); }
-        .role-card.docteur { border-color: #10b981; background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); }
-        .role-card.vendeuse { border-color: #3b82f6; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); }
 
-        .module-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 20px 0; }
-        .module-card {
-            background: white; border-radius: 15px; padding: 25px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease; border: 2px solid transparent;
+        /* Alerts */
+        .alert {
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin: 1.5rem 0;
+            border: 1px solid;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
         }
-        .module-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); border-color: #667eea; }
-        .module-icon { font-size: 2.5rem; margin-bottom: 15px; display: block; }
 
-        .faq-item { background: white; border-radius: 10px; margin-bottom: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
+        .alert i {
+            font-size: 1.2rem;
+            margin-top: 0.2rem;
+        }
+
+        .alert.info {
+            background: #ebf8ff;
+            border-color: #90cdf4;
+            color: #2c5282;
+        }
+
+        .alert.info i {
+            color: var(--info);
+        }
+
+        .alert.warning {
+            background: #fefcbf;
+            border-color: #f6e05e;
+            color: #744210;
+        }
+
+        .alert.warning i {
+            color: var(--warning);
+        }
+
+        .alert.success {
+            background: #f0fff4;
+            border-color: #9ae6b4;
+            color: #22543d;
+        }
+
+        .alert.success i {
+            color: var(--accent);
+        }
+
+        .alert.danger {
+            background: #fed7d7;
+            border-color: #feb2b2;
+            color: #742a2a;
+        }
+
+        .alert.danger i {
+            color: var(--danger);
+        }
+
+        /* Lists */
+        .feature-list {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .feature-list li {
+            padding: 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .feature-list li i {
+            color: var(--accent);
+            width: 20px;
+        }
+
+        /* FAQ */
+        .faq-item {
+            background: white;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
         .faq-question {
-            background: #f8fafc; padding: 20px; cursor: pointer; font-weight: 600;
-            display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease;
-        }
-        .faq-question:hover { background: #e2e8f0; }
-        .faq-answer { padding: 0 20px; max-height: 0; overflow: hidden; transition: all 0.3s ease; }
-        .faq-answer.open { padding: 20px; max-height: 1000px; }
-
-        .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; border: none; padding: 12px 25px; border-radius: 10px; cursor: pointer;
-            font-size: 1rem; font-weight: 600; transition: all 0.3s ease; display: inline-block; text-decoration: none;
-        }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4); }
-
-        .code {
-            background: #f1f5f9; padding: 10px 15px; border-radius: 8px; font-family: 'Courier New', monospace;
-            border: 1px solid #e2e8f0; margin: 10px 0; display: inline-block;
+            padding: 1.5rem;
+            background: #f8fafc;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--dark);
+            transition: var(--transition);
         }
 
-        .overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5); z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s ease;
+        .faq-question:hover {
+            background: #edf2f7;
         }
-        .overlay.active { opacity: 1; visibility: visible; }
 
-        .progress-indicator { position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: rgba(255, 255, 255, 0.3); z-index: 1002; }
-        .progress-bar { height: 100%; background: linear-gradient(90deg, #7ee4e6 0%, #5bed98 100%); width: 0%; transition: width 0.3s ease; }
+        .faq-question i {
+            color: var(--primary);
+            transition: var(--transition);
+        }
 
+        .faq-answer {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-answer.open {
+            padding: 1.5rem;
+            max-height: 500px;
+        }
+
+        /* Back to top */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Mobile Responsive */
         @media (max-width: 768px) {
-            .content.shifted { margin-left: 0; }
-            .sidebar { width: 100%; }
-            .header h1 { font-size: 2rem; }
-            .module-grid { grid-template-columns: 1fr; }
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .nav-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                box-shadow: var(--shadow);
+                gap: 0;
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .nav-menu a {
+                padding: 1rem;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 1rem;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .section {
+                padding: 2rem 1.5rem;
+            }
+
+            .section h2 {
+                font-size: 2rem;
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
-        /* Popup d'accueil Docteur avec animations d'étoiles */
-        .welcome-popup {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(ellipse at center, #1a237e 0%, #000051 70%, #000000 100%);
-            display: flex; align-items: center; justify-content: center; z-index: 10000;
-            opacity: 0; visibility: hidden; transition: all 0.5s ease; overflow: hidden;
-        }
-        .welcome-popup.show { opacity: 1; visibility: visible; }
-
-        .stars { position: absolute; width: 100%; height: 100%; pointer-events: none; }
-        .star { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; animation: twinkle 2s infinite; }
-        .star.large { width: 4px; height: 4px; box-shadow: 0 0 10px rgba(255, 255, 255, 0.8); }
-        .star.medium { width: 3px; height: 3px; box-shadow: 0 0 6px rgba(255, 255, 255, 0.6); }
-
-        .shooting-star {
-            position: absolute; width: 2px; height: 2px; background: linear-gradient(45deg, #fff, transparent);
-            border-radius: 50%; animation: shooting 3s linear infinite;
-        }
-        .shooting-star::after {
-            content: ''; position: absolute; width: 50px; height: 1px;
-            background: linear-gradient(90deg, rgba(255,255,255,0.8), transparent);
-            left: -50px; top: 50%; transform: translateY(-50%);
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .magic-particle {
-            position: absolute; width: 6px; height: 6px; background: radial-gradient(circle, #ffd700, #ffeb3b);
-            border-radius: 50%; animation: float-up 4s ease-out infinite; opacity: 0;
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
         }
-        .magic-particle.sparkle { background: radial-gradient(circle, #e3f2fd, #90caf9); animation: sparkle-float 3s ease-out infinite; }
 
-        .welcome-card {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
-            border-radius: 25px; padding: 40px; max-width: 500px; width: 90%; text-align: center; color: white;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 50px rgba(102, 126, 234, 0.3);
-            transform: scale(0.8) translateY(50px); transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: 2px solid rgba(255, 255, 255, 0.3); backdrop-filter: blur(20px); position: relative; overflow: hidden;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        .welcome-card::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); animation: shimmer 3s infinite;
-        }
-        .welcome-popup.show .welcome-card { transform: scale(1) translateY(0); }
 
-        .welcome-icon { font-size: 4rem; margin-bottom: 20px; display: block; animation: float-bounce 3s ease-in-out infinite; filter: drop-shadow(0 0 20px rgba(126, 228, 230, 0.5)); }
-        .welcome-title { font-size: 2rem; font-weight: 700; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.2); animation: glow-pulse 2s ease-in-out infinite alternate; }
-        .welcome-subtitle { font-size: 1.2rem; opacity: 0.9; margin-bottom: 25px; line-height: 1.4; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); }
+        ::-webkit-scrollbar-track {
+            background: var(--light);
+        }
 
-        .welcome-features {
-            background: rgba(255, 255, 255, 0.15); border-radius: 15px; padding: 20px; margin: 20px 0;
-            backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); position: relative; overflow: hidden;
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
         }
-        .welcome-features::after { content: '✨'; position: absolute; top: 10px; right: 15px; animation: rotate-sparkle 4s linear infinite; }
-        .welcome-features h4 { margin-bottom: 15px; color: #7ee4e6; font-size: 1.1rem; text-shadow: 0 0 10px rgba(126, 228, 230, 0.5); }
-        .welcome-features ul { list-style: none; padding: 0; }
-        .welcome-features li {
-            margin: 8px 0; padding-left: 25px; position: relative; text-align: left; animation: slide-in-left 0.6s ease forwards; opacity: 0;
-        }
-        .welcome-features li:nth-child(1){animation-delay: .2s;} .welcome-features li:nth-child(2){animation-delay: .4s;}
-        .welcome-features li:nth-child(3){animation-delay: .6s;} .welcome-features li:nth-child(4){animation-delay: .8s;}
-        .welcome-features li:nth-child(5){animation-delay: 1s;}
-        .welcome-features li::before { content: "⭐"; position: absolute; left: 0; top: 0; animation: star-twinkle 2s infinite; }
 
-        .welcome-progress { background: rgba(255, 255, 255, 0.2); height: 6px; border-radius: 3px; margin: 20px 0 10px; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2); }
-        .welcome-progress-bar {
-            background: linear-gradient(90deg, #7ee4e6 0%, #5bed98 50%, #ffd700 100%); height: 100%; width: 0%; border-radius: 3px;
-            animation: progressFill 9s ease-out; box-shadow: 0 0 10px rgba(126, 228, 230, 0.5); position: relative;
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
         }
-        .welcome-progress-bar::after {
-            content: ''; position: absolute; top: 0; left: -50px; width: 50px; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent); animation: progress-shine 2s infinite;
-        }
-        .welcome-timer { font-size: 0.9rem; opacity: 0.8; margin-top: 10px; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); }
-
-        @keyframes twinkle { 0%,100%{opacity:.3;transform:scale(1)} 50%{opacity:1;transform:scale(1.2)} }
-        @keyframes shooting { 0%{transform:translateX(-100px) translateY(-100px);opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{transform:translateX(100vw) translateY(100vh);opacity:0} }
-        @keyframes float-up { 0%{transform:translateY(100px) rotate(0);opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{transform:translateY(-100px) rotate(360deg);opacity:0} }
-        @keyframes sparkle-float { 0%{transform:translateY(50px) scale(0);opacity:0} 20%{opacity:1;transform:translateY(30px) scale(1)} 80%{opacity:1;transform:translateY(-30px) scale(1)} 100%{transform:translateY(-50px) scale(0);opacity:0} }
-        @keyframes float-bounce { 0%,100%{transform:translateY(0) rotate(0)} 33%{transform:translateY(-10px) rotate(5deg)} 66%{transform:translateY(5px) rotate(-5deg)} }
-        @keyframes glow-pulse { from{ text-shadow:0 2px 4px rgba(0,0,0,.3), 0 0 20px rgba(255,255,255,.2)} to{ text-shadow:0 2px 4px rgba(0,0,0,.3), 0 0 30px rgba(126,228,230,.4)} }
-        @keyframes shimmer { 0%{left:-100%} 100%{left:100%} }
-        @keyframes rotate-sparkle { from{transform:rotate(0)} to{transform:rotate(360deg)} }
-        @keyframes slide-in-left { from{opacity:0;transform:translateX(-20px)} to{opacity:1;transform:translateX(0)} }
-        @keyframes star-twinkle { 0%,100%{transform:scale(1) rotate(0)} 50%{transform:scale(1.3) rotate(180deg)} }
-        @keyframes progress-shine { 0%{left:-50px} 100%{left:100%} }
-        @keyframes progressFill { from{width:0%} to{width:100%} }
-        @keyframes fadeInUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes fadeOut { to{opacity:0;visibility:hidden;transform:scale(.9) translateY(-20px)} }
-        .welcome-popup.fade-out { animation: fadeOut 0.5s ease forwards; }
     </style>
 </head>
 <body>
-    <!-- Popup d'accueil Docteur Pharmacien avec étoiles animées -->
-    <div class="welcome-popup" id="welcomePopup">
-        <div class="stars" id="starsContainer"></div>
-        <div class="welcome-card">
-            <span class="welcome-icon">👨‍⚕️</span>
-            <h2 class="welcome-title">Bienvenue Docteur !</h2>
-            <p class="welcome-subtitle">✨ Votre système de gestion de pharmacie est prêt à l'emploi ✨</p>
-            <div class="welcome-features">
-                <h4>🚀 Votre tableau de bord vous permet de :</h4>
-                <ul>
-                    <li>Superviser toute votre activité en temps réel</li>
-                    <li>Gérer vos achats et fournisseurs</li>
-                    <li>Suivre vos ventes et votre équipe</li>
-                    <li>Contrôler votre stock et les péremptions</li>
-                    <li>Exporter vos données en toute sécurité</li>
-                </ul>
-            </div>
-            <div class="welcome-progress"><div class="welcome-progress-bar"></div></div>
-            <div class="welcome-timer">🎉 Redirection automatique dans <span id="countdown">9</span> secondes... 🎊</div>
+    <!-- Header -->
+    <header class="header">
+        <div class="container-fluid">
+            <h1><i class="fas fa-hospital"></i> Guide Utilisateur</h1>
+            <p>Système de Gestion de Pharmacie - Comment utiliser votre application</p>
         </div>
-    </div>
+    </header>
 
-    <!-- Indicateur de progression -->
-    <div class="progress-indicator"><div class="progress-bar" id="progressBar"></div></div>
-
-    <!-- Bouton menu -->
-    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
-
-    <!-- Overlay pour mobile -->
-    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-
-    <!-- Menu latéral -->
-    <nav class="sidebar" id="sidebar">
-        <h3>📚 Sommaire</h3>
-        <ul>
-            <li><a href="#introduction" onclick="scrollToSection('introduction')">🏠 Introduction</a></li>
-            <li><a href="#premiere-connexion" onclick="scrollToSection('premiere-connexion')">🚪 Première connexion</a></li>
-            <li><a href="#navigation" onclick="scrollToSection('navigation')">🧭 Navigation</a></li>
-            <li><a href="#roles" onclick="scrollToSection('roles')">👥 Rôles et permissions</a></li>
-            <li><a href="#dashboard" onclick="scrollToSection('dashboard')">📊 Tableau de bord</a></li>
-            <li><a href="#ventes" onclick="scrollToSection('ventes')">💰 Module Ventes</a></li>
-            <li><a href="#achats" onclick="scrollToSection('achats')">🛒 Module Achats</a></li>
-            <li><a href="#stock" onclick="scrollToSection('stock')">📦 Module Stock</a></li>
-            <li><a href="#devis-factures" onclick="scrollToSection('devis-factures')">📄 Devis & Factures</a></li>
-            <li><a href="#paiements" onclick="scrollToSection('paiements')">💳 Paiements</a></li>
-            <li><a href="#sauvegardes" onclick="scrollToSection('sauvegardes')">💾 Sauvegardes</a></li>
-            <li><a href="#utilisateurs" onclick="scrollToSection('utilisateurs')">👤 Gestion utilisateurs</a></li>
-            <li><a href="#faq" onclick="scrollToSection('faq')">❓ FAQ</a></li>
-        </ul>
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <div class="nav">
+            <button class="nav-toggle" onclick="toggleNav()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#introduction" onclick="scrollToSection('introduction')">Introduction</a></li>
+                <li><a href="#getting-started" onclick="scrollToSection('getting-started')">Démarrage</a></li>
+                <li><a href="#modules" onclick="scrollToSection('modules')">Modules</a></li>
+                <li><a href="#utilisation" onclick="scrollToSection('utilisation')">Utilisation</a></li>
+                <li><a href="#faq" onclick="scrollToSection('faq')">FAQ</a></li>
+            </ul>
+        </div>
     </nav>
 
-    <div class="content" id="content">
-        <div class="container">
-            <!-- En-tête -->
-            <div class="header">
-                <h1>🏥 Guide d'utilisation</h1>
-                <p>Système de Gestion de Pharmacie - Guide complet pour Pharmaciens</p>
-            </div>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h3><i class="fas fa-list"></i> Sommaire</h3>
+            <ul>
+                <li><a href="#introduction"><i class="fas fa-info-circle"></i> Introduction</a></li>
+                <li><a href="#getting-started"><i class="fas fa-play"></i> Premier démarrage</a></li>
+                <li><a href="#roles"><i class="fas fa-users"></i> Rôles utilisateurs</a></li>
+                <li><a href="#connexion"><i class="fas fa-sign-in-alt"></i> Connexion</a></li>
+                <li><a href="#dashboard"><i class="fas fa-chart-dashboard"></i> Tableau de bord</a></li>
+                <li><a href="#ventes"><i class="fas fa-shopping-cart"></i> Effectuer des ventes</a></li>
+                <li><a href="#achats"><i class="fas fa-truck"></i> Gérer les achats</a></li>
+                <li><a href="#stock"><i class="fas fa-boxes"></i> Consulter le stock</a></li>
+                <li><a href="#impressions"><i class="fas fa-print"></i> Impressions</a></li>
+                <li><a href="#parametres"><i class="fas fa-cog"></i> Paramètres</a></li>
+                <li><a href="#faq"><i class="fas fa-question-circle"></i> Questions fréquentes</a></li>
+            </ul>
+        </aside>
 
-            <!-- Section Introduction -->
-            <section class="section" id="introduction">
-                <div class="section-header">
-                    <span>🏠</span>
-                    <span>Introduction générale</span>
-                </div>
-                <div class="section-content">
-                    <h3>Qu'est-ce que ce système ?</h3>
-                    <p>Ce site web est un <strong>système de gestion complet pour pharmacie</strong> qui vous permet de :</p>
-                    <ul style="margin: 15px 0; padding-left: 20px;">
-                        <li>📊 Suivre vos ventes et achats en temps réel</li>
-                        <li>📦 Gérer votre stock avec système de lots et dates de péremption</li>
-                        <li>💰 Créer des factures et suivre les paiements</li>
-                        <li>👥 Inviter et gérer votre équipe</li>
-                        <li>💾 Sauvegarder et exporter vos données</li>
-                    </ul>
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Introduction -->
+            <section id="introduction" class="section fade-in">
+                <h2><i class="fas fa-info-circle"></i> Introduction</h2>
+                <p>Ce guide vous accompagne dans l'utilisation quotidienne de votre système de gestion de pharmacie. Vous découvrirez comment naviguer dans l'application, effectuer des ventes, gérer vos achats et consulter votre stock.</p>
 
-                    <div class="highlight">
-                        <strong>🎯 Public cible :</strong> Ce système est conçu pour les pharmaciens et leur équipe (vendeuses). Chaque utilisateur a des accès adaptés à son rôle.
+                <div class="card-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h4>Suivi en temps réel</h4>
+                        <p>Visualisez vos performances avec des statistiques mises à jour automatiquement.</p>
                     </div>
-
-                    <h3>Architecture du système</h3>
-                    <p>Le système fonctionne avec :</p>
-                    <ul style="margin: 15px 0; padding-left: 20px;">
-                        <li><strong>Des sociétés</strong> : chaque pharmacie = 1 société</li>
-                        <li><strong>Des utilisateurs</strong> : Docteur (propriétaire) + Vendeuses (employées)</li>
-                        <li><strong>Des modules</strong> : chaque fonctionnalité a son propre espace</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Section Première connexion -->
-            <section class="section" id="premiere-connexion">
-                <div class="section-header">
-                    <span>🚪</span>
-                    <span>Première connexion et inscription</span>
-                </div>
-                <div class="section-content">
-                    <h3>Étape 1 : Accéder au site</h3>
-                    <div class="step">
-                        <h4>🌐 Page d'accueil</h4>
-                        <p>Quand vous ouvrez le site, vous arrivez sur la page d'accueil avec deux boutons :</p>
-                        <ul style="padding-left: 20px;">
-                            <li><strong>"Se connecter"</strong> : si vous avez déjà un compte</li>
-                            <li><strong>"S'inscrire"</strong> : pour créer un nouveau compte</li>
-                        </ul>
+                    <div class="feature-card">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h4>Interface intuitive</h4>
+                        <p>Une interface simple et moderne, utilisable sur ordinateur, tablette et mobile.</p>
                     </div>
-
-                    <h3>Étape 2 : S'inscrire</h3>
-                    <div class="info"><strong>💡 Important :</strong> il y a 2 types d'inscription selon votre statut, <u>sans aucun code</u> — les employés rejoignent uniquement via un <strong>lien d'invitation</strong>.</div>
-
-                    <div class="role-card docteur">
-                        <h4>👨‍⚕️ Vous êtes PHARMACIEN ?</h4>
-                        <div class="step">
-                            <h4>📝 Inscription Pharmacien</h4>
-                            <p><strong>1.</strong> Cliquez sur "S'inscrire" → "Je suis pharmacien"</p>
-                            <p><strong>2.</strong> Remplissez le formulaire :</p>
-                            <ul style="padding-left: 20px;">
-                                <li>Email professionnel</li>
-                                <li>Mot de passe (minimum 6 caractères)</li>
-                                <li>Confirmer le mot de passe</li>
-                                <li>Nom et prénom</li>
-                                <li>Téléphone (optionnel)</li>
-                            </ul>
-                            <p><strong>3.</strong> Après validation, vous devrez :</p>
-                            <ul style="padding-left: 20px;">
-                                <li>Créer votre société (votre pharmacie)</li>
-                                <li>Choisir un nom pour votre pharmacie</li>
-                                <li>Inviter votre équipe via des <strong>liens d'invitation</strong></li>
-                            </ul>
-                        </div>
+                    <div class="feature-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h4>Sécurisé</h4>
+                        <p>Vos données sont protégées avec des accès personnalisés selon votre rôle.</p>
                     </div>
-
-                    <div class="role-card vendeuse">
-                        <h4>👩‍💼 Vous êtes VENDEUSE ?</h4>
-                        <div class="step">
-                            <h4>📝 Inscription Employée (par lien)</h4>
-                            <p><strong>1.</strong> Demandez au pharmacien de vous envoyer un <strong>lien d'invitation</strong> (email / WhatsApp / SMS)</p>
-                            <p><strong>2.</strong> Cliquez sur le lien reçu → la page d'inscription s’ouvre automatiquement</p>
-                            <p><strong>3.</strong> Remplissez le formulaire (email, mot de passe, nom/prénom)</p>
-                            <p><strong>4.</strong> Validez → vous êtes rattachée à la bonne pharmacie <strong>sans code</strong></p>
-                        </div>
-                    </div>
-
-                    <div class="warning">
-                        <strong>⚠️ Attention :</strong> Une fois inscrit, votre rôle ne peut plus être modifié. Choisissez bien dès le départ !
-                    </div>
-
-                    <h3>Étape 3 : Première connexion</h3>
-                    <div class="step">
-                        <h4>🔑 Se connecter</h4>
-                        <p><strong>1.</strong> Retournez sur la page d'accueil</p>
-                        <p><strong>2.</strong> Cliquez sur "Se connecter"</p>
-                        <p><strong>3.</strong> Entrez votre email et mot de passe</p>
-                        <p><strong>4.</strong> Vous arrivez automatiquement sur le tableau de bord</p>
+                    <div class="feature-card">
+                        <i class="fas fa-sync"></i>
+                        <h4>Synchronisation</h4>
+                        <p>Tous vos appareils sont synchronisés en temps réel pour une expérience fluide.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- Section Navigation -->
-            <section class="section" id="navigation">
-                <div class="section-header">
-                    <span>🧭</span>
-                    <span>Navigation dans le système</span>
+            <!-- Premier démarrage -->
+            <section id="getting-started" class="section">
+                <h2><i class="fas fa-play"></i> Premier démarrage</h2>
+                <p>Pour accéder à l'application, vous devez disposer d'un code d'invitation fourni par le pharmacien responsable.</p>
+
+                <div class="steps">
+                    <div class="step">
+                        <h4>Inscription avec code d'invitation</h4>
+                        <p>Rendez-vous sur la page d'inscription et saisissez le code d'invitation à 8 caractères que vous avez reçu. Ce code vous connecte automatiquement à la bonne pharmacie.</p>
+                    </div>
+
+                    <div class="step">
+                        <h4>Création de votre compte</h4>
+                        <p>Remplissez vos informations personnelles : nom, prénom, email et mot de passe. Votre rôle (Docteur ou Vendeuse) est automatiquement attribué selon l'invitation.</p>
+                    </div>
+
+                    <div class="step">
+                        <h4>Première connexion</h4>
+                        <p>Une fois inscrit, connectez-vous avec votre email et mot de passe. Vous accédez directement au tableau de bord de votre pharmacie.</p>
+                    </div>
                 </div>
-                <div class="section-content">
-                    <h3>Interface générale</h3>
-                    <div class="step">
-                        <h4>🎛️ Barre de navigation (Navbar)</h4>
-                        <p>En haut de l'écran, vous trouvez :</p>
-                        <ul style="padding-left: 20px;">
-                            <li><strong>Logo/Nom de la pharmacie</strong> à gauche</li>
-                            <li><strong>Menu principal</strong> au centre avec tous les modules</li>
-                            <li><strong>Profil utilisateur</strong> à droite (nom, rôle, déconnexion)</li>
-                            <li><strong>Horloge en temps réel</strong></li>
-                        </ul>
-                    </div>
 
-                    <!-- ⛔️ Section "Bouton dashboard flottant" supprimée -->
-                    <h3>Structure des pages</h3>
-                    <div class="step">
-                        <h4>📄 Organisation type d'une page</h4>
-                        <p>Chaque module suit la même structure :</p>
-                        <ul style="padding-left: 20px;">
-                            <li><strong>Titre</strong> avec icône et description</li>
-                            <li><strong>Boutons d'action</strong> (Ajouter, Exporter, etc.)</li>
-                            <li><strong>Filtres et recherche</strong> (si applicable)</li>
-                            <li><strong>Tableau de données</strong> avec colonnes triables</li>
-                            <li><strong>Actions par ligne</strong> (Modifier, Supprimer, etc.)</li>
-                        </ul>
-                    </div>
-
-                    <div class="info">
-                        <strong>💡 Astuce navigation :</strong> Utilisez toujours le menu principal en haut pour naviguer entre les modules. Les liens sont colorés selon vos permissions.
+                <div class="alert info">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Important :</strong> Sans code d'invitation valide, il est impossible de créer un compte. Contactez votre pharmacien si vous n'avez pas reçu de code.
                     </div>
                 </div>
             </section>
 
-            <!-- Section Rôles -->
-            <section class="section" id="roles">
-                <div class="section-header">
-                    <span>👥</span>
-                    <span>Rôles et permissions</span>
+            <!-- Rôles utilisateurs -->
+            <section id="roles" class="section">
+                <h2><i class="fas fa-users"></i> Rôles utilisateurs</h2>
+                <p>L'application propose deux types d'accès selon votre fonction dans la pharmacie.</p>
+
+                <div class="card-grid">
+                    <div class="card role-card docteur">
+                        <h4><i class="fas fa-user-md"></i> Docteur (Pharmacien)</h4>
+                        <p>Accès complet à toutes les fonctionnalités de l'application.</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> Tableau de bord complet</li>
+                            <li><i class="fas fa-check"></i> Gestion des ventes</li>
+                            <li><i class="fas fa-check"></i> Module achats et réceptions</li>
+                            <li><i class="fas fa-check"></i> Gestion du stock</li>
+                            <li><i class="fas fa-check"></i> Administration des utilisateurs</li>
+                            <li><i class="fas fa-check"></i> Paramètres de la pharmacie</li>
+                            <li><i class="fas fa-check"></i> Tous les rapports et statistiques</li>
+                        </ul>
+                    </div>
+
+                    <div class="card role-card vendeuse">
+                        <h4><i class="fas fa-user"></i> Vendeuse</h4>
+                        <p>Accès optimisé pour les activités de vente et service client.</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> Tableau de bord personnel</li>
+                            <li><i class="fas fa-check"></i> Module ventes complet</li>
+                            <li><i class="fas fa-check"></i> Consultation du stock</li>
+                            <li><i class="fas fa-check"></i> Impression des documents</li>
+                            <li><i class="fas fa-check"></i> Statistiques de vente</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="section-content">
-                    <h3>Les deux rôles disponibles</h3>
 
-                    <div class="role-card docteur">
-                        <div class="module-icon">👨‍⚕️</div>
-                        <h4>Rôle : DOCTEUR (Pharmacien)</h4>
-                        <p><strong>Accès complet :</strong> Peut tout faire sur le système</p>
-                        <h5>✅ Permissions spéciales :</h5>
-                        <ul style="padding-left: 20px; margin: 10px 0;">
-                            <li>🛒 <strong>Module Achats</strong> (exclusif au docteur)</li>
-                            <li>⚙️ <strong>Paramètres système</strong></li>
-                            <li>👥 <strong>Gestion des utilisateurs</strong> (inviter via lien, modifier, supprimer)</li>
-                            <li>💾 <strong>Sauvegardes complètes</strong></li>
-                            <li>📊 <strong>Tous les rapports</strong></li>
-                        </ul>
-                        <h5>🔧 Tâches d'administration :</h5>
-                        <ul style="padding-left: 20px;">
-                            <li>Créer la société</li>
-                            <li>Inviter les vendeuses via des <strong>liens d'invitation</strong></li>
-                            <li>Configurer les paramètres de la pharmacie</li>
-                            <li>Valider les retours produits</li>
-                        </ul>
-                    </div>
-
-                    <div class="role-card vendeuse">
-                        <div class="module-icon">👩‍💼</div>
-                        <h4>Rôle : VENDEUSE (Employée)</h4>
-                        <p><strong>Accès limité :</strong> Axé sur les ventes et le service client</p>
-                        <h5>✅ Ce que vous pouvez faire :</h5>
-                        <ul style="padding-left: 20px; margin: 10px 0;">
-                            <li>📊 <strong>Voir le tableau de bord</strong></li>
-                            <li>💰 <strong>Gérer les ventes</strong> (créer, modifier ses ventes)</li>
-                            <li>📦 <strong>Consulter le stock</strong> et faire des ajustements</li>
-                            <li>📄 <strong>Créer des devis et factures</strong></li>
-                            <li>💳 <strong>Enregistrer des paiements</strong></li>
-                            <li>🔄 <strong>Demander des retours</strong> (validation par le docteur)</li>
-                            <li>🖨️ <strong>Imprimer des documents</strong></li>
-                        </ul>
-                        <h5>❌ Restrictions :</h5>
-                        <ul style="padding-left: 20px;">
-                            <li>Pas d'accès au module Achats</li>
-                            <li>Pas de gestion des utilisateurs</li>
-                            <li>Pas d'accès aux paramètres système</li>
-                            <li>Ne peut pas supprimer de données importantes</li>
-                        </ul>
-                    </div>
-
-                    <div class="highlight">
-                        <strong>🔒 Sécurité :</strong> Les permissions sont automatiquement vérifiées. Si vous n'avez pas accès à une fonctionnalité, le système vous le dira clairement.
+                <div class="alert success">
+                    <i class="fas fa-key"></i>
+                    <div>
+                        <strong>Permissions étendues :</strong> Le pharmacien peut accorder des permissions supplémentaires aux vendeuses (accès aux achats, paramètres, etc.) selon les besoins.
                     </div>
                 </div>
             </section>
 
-            <!-- Section Dashboard -->
-            <section class="section" id="dashboard">
-                <div class="section-header">
-                    <span>📊</span>
-                    <span>Tableau de bord principal</span>
+            <!-- Connexion -->
+            <section id="connexion" class="section">
+                <h2><i class="fas fa-sign-in-alt"></i> Connexion et navigation</h2>
+                
+                <h3>Se connecter</h3>
+                <div class="steps">
+                    <div class="step">
+                        <h4>Page de connexion</h4>
+                        <p>Saisissez votre email et votre mot de passe sur la page d'accueil.</p>
+                    </div>
+
+                    <div class="step">
+                        <h4>Sélection automatique</h4>
+                        <p>Vous êtes automatiquement dirigé vers votre pharmacie. Si vous avez accès à plusieurs pharmacies, choisissez celle souhaitée.</p>
+                    </div>
                 </div>
-                <div class="section-content">
-                    <h3>Vue d'ensemble de votre activité</h3>
-                    <p>Le tableau de bord est votre <strong>page centrale</strong> qui affiche toutes les informations importantes en un coup d'œil.</p>
-                    <div class="step">
-                        <h4>📈 Statistiques principales</h4>
-                        <p>En haut, vous verrez 4 cartes avec :</p>
-                        <ul style="padding-left: 20px;">
-                            <li><strong>Total Ventes</strong> : Chiffre d'affaires de la période</li>
-                            <li><strong>Total Achats</strong> : Dépenses de la période</li>
-                            <li><strong>Produits en Stock</strong> : Nombre total d'articles</li>
-                            <li><strong>Solde Caisse</strong> : Différence ventes - achats</li>
-                        </ul>
-                    </div>
-                    <div class="step">
-                        <h4>📅 Filtres par période</h4>
-                        <p>Vous pouvez analyser vos données sur différentes périodes :</p>
-                        <ul style="padding-left: 20px;">
-                            <li><strong>Aujourd'hui</strong> : Activité du jour</li>
-                            <li><strong>Cette semaine</strong> : 7 derniers jours</li>
-                            <li><strong>Ce mois</strong> : Mois en cours</li>
-                            <li><strong>Personnalisée</strong> : Choisir dates de début/fin</li>
-                        </ul>
-                    </div>
-                    <div class="step">
-                        <h4>🚨 Alertes automatiques</h4>
-                        <p>Le système vous avertit automatiquement pour :</p>
-                        <ul style="padding-left: 20px;">
-                            <li><strong>Stock bas</strong></li>
-                            <li><strong>Produits périmés</strong></li>
-                            <li><strong>Péremption proche</strong></li>
-                            <li><strong>Documents impayés</strong></li>
-                        </ul>
-                    </div>
-                    <div class="highlight"><strong>🏠 Point de départ :</strong> Commencez toujours par le dashboard pour une vue d'ensemble.</div>
-                </div>
+
+                <h3>Navigation dans l'application</h3>
+                <p>L'application est organisée en modules accessibles via le menu principal :</p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-home"></i> <strong>Accueil :</strong> Tableau de bord et statistiques</li>
+                    <li><i class="fas fa-shopping-cart"></i> <strong>Ventes :</strong> Enregistrer les ventes</li>
+                    <li><i class="fas fa-truck"></i> <strong>Achats :</strong> Gérer les commandes et réceptions (Docteur)</li>
+                    <li><i class="fas fa-boxes"></i> <strong>Stock :</strong> Consulter et gérer l'inventaire</li>
+                    <li><i class="fas fa-cog"></i> <strong>Paramètres :</strong> Configuration de la pharmacie</li>
+                </ul>
             </section>
 
-            <!-- Section Ventes -->
-            <section class="section" id="ventes">
-                <div class="section-header">
-                    <span>💰</span>
-                    <span>Module Ventes</span>
-                </div>
-                <div class="section-content">
-                    <h3>Gérer vos ventes clients</h3>
-                    <p>Ce module vous permet d'enregistrer toutes les ventes et de suivre votre chiffre d'affaires.</p>
+            <!-- Tableau de bord -->
+            <section id="dashboard" class="section">
+                <h2><i class="fas fa-chart-dashboard"></i> Utiliser le tableau de bord</h2>
+                <p>Le tableau de bord vous donne une vue d'ensemble de l'activité de votre pharmacie.</p>
 
-                    <div class="step">
-                        <h4>➕ Créer une nouvelle vente</h4>
-                        <p><strong>1.</strong> Cliquez sur le bouton "Nouvelle Vente"</p>
-                        <p><strong>2.</strong> Choisissez le type :</p>
-                        <ul style="padding-left: 20px;">
-                            <li><strong>Vente Comptoir</strong> : vente directe sans ordonnance</li>
-                            <li><strong>Vente Ordonnance</strong> : avec prescription médicale</li>
-                        </ul>
-                        <p><strong>3.</strong> Remplissez les informations client (optionnel)</p>
-                        <p><strong>4.</strong> Ajoutez les produits un par un</p>
-                    </div>
+                <h3>Informations principales</h3>
+                <ul class="feature-list">
+                    <li><i class="fas fa-euro-sign"></i> <strong>Chiffre d'affaires :</strong> Total des ventes sur la période sélectionnée</li>
+                    <li><i class="fas fa-receipt"></i> <strong>Nombre de ventes :</strong> Compteur des transactions</li>
+                    <li><i class="fas fa-truck"></i> <strong>Montant des achats :</strong> Total des approvisionnements</li>
+                    <li><i class="fas fa-wallet"></i> <strong>Caisse :</strong> Montant disponible en caisse</li>
+                    <li><i class="fas fa-boxes"></i> <strong>Stock critique :</strong> Produits en rupture ou bientôt épuisés</li>
+                </ul>
 
-                    <div class="step">
-                        <h4>🛍️ Ajouter des produits à la vente</h4>
-                        <p><strong>Pour chaque produit :</strong></p>
-                        <ul style="padding-left: 20px;">
-                            <li>Tapez le nom (autocomplétion depuis le stock)</li>
-                            <li>Choisissez la quantité</li>
-                            <li>Le prix se remplit automatiquement</li>
-                            <li>Ajoutez une remise si nécessaire</li>
-                            <li>Cliquez "Ajouter à la vente"</li>
-                        </ul>
-                    </div>
+                <h3>Filtres de période</h3>
+                <p>Utilisez les boutons en haut du tableau de bord pour filtrer les données :</p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-calendar-day"></i> Aujourd'hui</li>
+                    <li><i class="fas fa-calendar-week"></i> Cette semaine</li>
+                    <li><i class="fas fa-calendar"></i> Ce mois</li>
+                    <li><i class="fas fa-calendar-alt"></i> Période personnalisée</li>
+                </ul>
 
-                    <div class="step">
-                        <h4>💳 Finaliser la vente</h4>
-                        <p><strong>1.</strong> Vérifiez le récapitulatif</p>
-                        <p><strong>2.</strong> Appliquez une remise globale si besoin</p>
-                        <p><strong>3.</strong> Choisissez le mode de paiement</p>
-                        <p><strong>4.</strong> Cliquez "Finaliser la vente"</p>
-                        <p><strong>5.</strong> Le stock est automatiquement mis à jour</p>
-                    </div>
-
-                    <div class="info"><strong>🎯 Bon à savoir :</strong> Les ventes sont horodatées et liées à votre compte.</div>
-                </div>
-            </section>
-
-            <!-- Section Achats (mise à jour pour coller à Achats.js) -->
-            <section class="section" id="achats">
-                <div class="section-header">
-                    <span>🛒</span>
-                    <span>Module Achats (Docteur uniquement)</span>
-                </div>
-                <div class="section-content">
-                    <div class="warning"><strong>🚫 Accès restreint :</strong> ce module n'est accessible qu'aux pharmaciens (owner).</div>
-
-                    <h3>Flux d'achat <em>Commande → Réception</em> (multi-lots)</h3>
-                    <p>Chaque ligne d’article comporte deux volets : <code>commandee</code> (quantités/prix prévus) et <code>recu</code> (quantités/prix réellement reçus). La <strong>réception</strong> met à jour le stock <strong>par lots</strong> et le <strong>statut de réception</strong>.</p>
-
-                    <div class="step">
-                        <h4>📦 Créer un bon d'achat (COMMANDE)</h4>
-                        <p><strong>1.</strong> Cliquez sur <em>Nouveau Bon d’Achat</em></p>
-                        <p><strong>2.</strong> Renseignez : <em>Fournisseur</em>, <em>Date d’achat</em>, <em>Remise globale</em>, <em>Statut de paiement</em> (Payé / Impayé / Partiel)</p>
-                        <p><strong>3.</strong> Ajoutez des articles. Pour chaque ligne :</p>
-                        <ul style="padding-left:20px">
-                            <li>Produit existant <em>ou</em> nouveau produit</li>
-                            <li>Quantité <em>commandée</em></li>
-                            <li>Prix d’achat (ou prix unitaire)</li>
-                            <li>Prix de vente (optionnel)</li>
-                            <li>Remise par article (optionnel)</li>
-                            <li>Date de péremption & Numéro de lot (si vide, peut être généré)</li>
-                        </ul>
-                        <div class="info"><strong>Automatisation :</strong> si le <em>Statut de paiement</em> est <em>Payé</em> à l’enregistrement, un <strong>paiement “Achats”</strong> est créé automatiquement pour le montant total, et une <em>activité</em> est journalisée.</div>
-                    </div>
-
-                    <div class="step">
-                        <h4>📥 Réception (contrôle des quantités réellement reçues)</h4>
-                        <p>Sur un bon au statut <em>réception = en_attente</em>, cliquez <em>Démarrer la réception</em> puis ajustez la partie <code>recu</code> : quantité reçue, prix d’achat, remise, numéro de lot, etc.</p>
-                        <p>À la soumission, le système calcule le <strong>statut de réception</strong> :</p>
-                        <ul style="padding-left:20px">
-                            <li><strong>reçu</strong> : tout reçu</li>
-                            <li><strong>partiel</strong> : une partie reçue</li>
-                            <li><strong>annulé</strong> : rien reçu</li>
-                        </ul>
-                        <p>En cas de réception (totale/partielle), des entrées <code>stock_entries</code> <strong>par lot</strong> sont ajoutées et le stock traditionnel est synchronisé. Une activité <em>reception_achat</em> est enregistrée.</p>
-                    </div>
-
-                    <div class="step">
-                        <h4>🖨️ Impression pro (Bon de Commande / Réception)</h4>
-                        <p>Impressions <em>mobile-friendly</em> avec entête/pied personnalisés. <strong>Cachet</strong> : image (logo) ou <em>cachet texte</em> circulaire. Zone de signature incluse.</p>
-                    </div>
-
-                    <div class="step">
-                        <h4>🔎 Filtres et recherche (historique Achats)</h4>
-                        <ul style="padding-left:20px">
-                            <li>Fournisseur</li>
-                            <li>Médicament / Produit</li>
-                            <li>Période (date min / date max)</li>
-                            <li>Statut de réception (en_attente / partiel / reçu / annulé)</li>
-                        </ul>
-                    </div>
-
-                    <div class="highlight"><strong>Rappels :</strong> la <em>modification</em> d’un bon conserve l’historique; la <em>suppression</em> nettoie les entrées de stock liées. Toutes les actions majeures sont journalisées dans <em>activities</em>.</div>
-                </div>
-            </section>
-
-           <!-- Section Stock -->
-            <section class="section" id="stock">
-                <div class="section-header">
-                    <span>📦</span>
-                    <span>Module Stock</span>
-                </div>
-                <div class="section-content">
-                    <h3>Gestion avancée du stock</h3>
-                    <p>Le système utilise une <strong>gestion par lots</strong> pour une traçabilité maximale.</p>
-
-                    <div class="step">
-                        <h4>📋 Comprendre l'affichage du stock</h4>
-                        <p>Vous verrez deux types d'informations :</p>
-                        <ul style="padding-left: 20px;">
-                            <li><strong>Stock global</strong> : quantité totale par produit</li>
-                            <li><strong>Détail par lots</strong> : chaque livraison/lot séparément</li>
-                        </ul>
-                    </div>
-
-                    <div class="step">
-                        <h4>🔍 Rechercher un produit</h4>
-                        <p><strong>Utilisez la barre de recherche pour :</strong></p>
-                        <ul style="padding-left: 20px;">
-                            <li>Trouver un produit par nom</li>
-                            <li>Filtrer par fournisseur</li>
-                            <li>Rechercher par numéro de lot</li>
-                        </ul>
-                    </div>
-
-                    <div class="step">
-                        <h4>⚡ Ajustements rapides</h4>
-                        <p><strong>Vous pouvez directement :</strong></p>
-                        <ul style="padding-left: 20px;">
-                            <li>Modifier les quantités (corrections d'inventaire)</li>
-                            <li>Mettre à jour les prix de vente</li>
-                            <li>Marquer des produits périmés</li>
-                            <li>Ajouter des notes</li>
-                        </ul>
-                    </div>
-
-                    <div class="info"><strong>📅 Dates de péremption :</strong> alertes 30 jours avant la péremption et signalement des produits périmés.</div>
-                    <div class="warning"><strong>⚠️ Important :</strong> ne supprimez jamais un produit du stock s'il a déjà été vendu. Mettez plutôt la quantité à 0.</div>
-                </div>
-            </section>
-
-            <!-- Section Devis & Factures -->
-            <section class="section" id="devis-factures">
-                <div class="section-header">
-                    <span>📄</span>
-                    <span>Devis & Factures</span>
-                </div>
-                <div class="section-content">
-                    <h3>Documents commerciaux</h3>
-                    <p>Ce module permet de créer des devis pour les clients et de les transformer en factures.</p>
-
-                    <div class="step">
-                        <h4>📝 Créer un devis</h4>
-                        <p><strong>1.</strong> Cliquez sur "Nouveau Devis"</p>
-                        <p><strong>2.</strong> Remplissez les informations client :</p>
-                        <ul style="padding-left: 20px;">
-                            <li>Nom et prénom</li>
-                            <li>Adresse complète</li>
-                            <li>Téléphone et email</li>
-                        </ul>
-                        <p><strong>3.</strong> Ajoutez les produits comme pour une vente</p>
-                        <p><strong>4.</strong> Le devis est généré avec numéro unique</p>
-                    </div>
-
-                    <div class="step">
-                        <h4>💼 Transformer en facture</h4>
-                        <p><strong>Quand le client accepte :</strong></p>
-                        <ul style="padding-left: 20px;">
-                            <li>Ouvrez le devis existant</li>
-                            <li>Cliquez "Transformer en facture"</li>
-                            <li>Le stock est automatiquement déduit</li>
-                            <li>La vente est enregistrée</li>
-                        </ul>
-                    </div>
-
-                    <div class="step">
-                        <h4>🖨️ Imprimer et envoyer</h4>
-                        <p><strong>Tous les documents peuvent être :</strong></p>
-                        <ul style="padding-left: 20px;">
-                            <li>Imprimés directement</li>
-                            <li>Exportés en PDF</li>
-                            <li>Envoyés par email (si configuré)</li>
-                        </ul>
-                    </div>
-
-                    <div class="highlight"><strong>📋 Suivi :</strong> chaque devis a un statut (En attente, Accepté, Refusé).</div>
-                </div>
-            </section>
-
-            <!-- Section Paiements -->
-            <section class="section" id="paiements">
-                <div class="section-header">
-                    <span>💳</span>
-                    <span>Suivi des paiements</span>
-                </div>
-                <div class="section-content">
-                    <h3>Gestion des encaissements</h3>
-                    <p>Ce module vous aide à suivre tous les paiements clients et à identifier les impayés.</p>
-
-                    <div class="step">
-                        <h4>💰 Enregistrer un paiement</h4>
-                        <p><strong>1.</strong> Cliquez sur "Nouveau Paiement"</p>
-                        <p><strong>2.</strong> Choisissez la vente ou facture concernée</p>
-                        <p><strong>3.</strong> Indiquez :</p>
-                        <ul style="padding-left: 20px;">
-                            <li>Montant encaissé</li>
-                            <li>Mode de paiement (Espèces, Carte, Chèque, Virement)</li>
-                            <li>Date d'encaissement</li>
-                            <li>Notes éventuelles</li>
-                        </ul>
-                    </div>
-
-                    <div class="step">
-                        <h4>📊 Tableau de bord paiements</h4>
-                        <p><strong>Vous pouvez voir :</strong></p>
-                        <ul style="padding-left: 20px;">
-                            <li>Tous les paiements du jour/période</li>
-                            <li>Répartition par mode de paiement</li>
-                            <li>Factures payées/impayées/partielles</li>
-                            <li>Relances nécessaires</li>
-                        </ul>
-                    </div>
-
-                    <div class="step">
-                        <h4>🔍 Recherche et filtres</h4>
-                        <p><strong>Filtrez par :</strong></p>
-                        <ul style="padding-left: 20px;">
-                            <li>Statut de paiement</li>
-                            <li>Mode de paiement</li>
-                            <li>Période</li>
-                            <li>Client</li>
-                        </ul>
-                    </div>
-
-                    <div class="info"><strong>🔄 Automatisation :</strong> les paiements sont liés aux ventes et les statuts se mettent à jour en temps réel.</div>
-                </div>
-            </section>
-
-            <!-- Section Sauvegardes -->
-            <section class="section" id="sauvegardes">
-                <div class="section-header">
-                    <span>💾</span>
-                    <span>Sauvegardes et export</span>
-                </div>
-                <div class="section-content">
-                    <h3>Protéger vos données</h3>
-                    <p>Module essentiel pour <strong>sauvegarder et restaurer</strong> toutes vos données.</p>
-
-                    <div class="step">
-                        <h4>📤 Exporter vos données</h4>
-                        <p><strong>1.</strong> Allez dans "Sauvegardes" → Onglet "Export"</p>
-                        <p><strong>2.</strong> Choisissez ce que vous voulez exporter :</p>
-                        <ul style="padding-left: 20px;">
-                            <li>✅ Ventes (recommandé)</li>
-                            <li>✅ Achats (recommandé)</li>
-                            <li>✅ Stock (recommandé)</li>
-                            <li>✅ Paiements (recommandé)</li>
-                            <li>+ Autres modules selon vos besoins</li>
-                        </ul>
-                        <p><strong>3.</strong> Cliquez "Télécharger la sauvegarde"</p>
-                        <p><strong>4.</strong> Un fichier ZIP se télécharge avec tout</p>
-                    </div>
-
-                    <div class="step">
-                        <h4>📥 Importer une sauvegarde</h4>
-                        <p><strong>1.</strong> Allez dans "Sauvegardes" → Onglet "Import"</p>
-                        <p><strong>2.</strong> Glissez-déposez votre fichier ZIP de sauvegarde</p>
-                        <p><strong>3.</strong> Choisissez le mode d'import :</p>
-                        <ul style="padding-left: 20px;">
-                            <li><strong>Ajout</strong> : ajoute aux données existantes</li>
-                            <li><strong>Remplacement</strong> : remplace toutes les données</li>
-                        </ul>
-                        <p><strong>4.</strong> Confirmez l'import</p>
-                    </div>
-
-                    <div class="highlight"><strong>💡 Bonne pratique :</strong> exportez une sauvegarde complète au moins 1 fois par semaine.</div>
-                    <div class="warning"><strong>⚠️ Attention import :</strong> le mode "remplacement" supprime toutes vos données actuelles.</div>
-                </div>
-            </section>
-
-            <!-- Section Utilisateurs -->
-            <section class="section" id="utilisateurs">
-                <div class="section-header">
-                    <span>👤</span>
-                    <span>Gestion des utilisateurs</span>
-                </div>
-                <div class="section-content">
-                    <h3>Inviter et gérer votre équipe</h3>
-
-                    <div class="step">
-                        <h4>📧 Inviter une vendeuse (Docteur uniquement)</h4>
-                        <p><strong>1.</strong> Allez dans "Utilisateurs" ou "Paramètres"</p>
-                        <p><strong>2.</strong> Cliquez sur "Inviter un utilisateur"</p>
-                        <p><strong>3.</strong> Entrez l'email de la personne (ou générez un lien partageable)</p>
-                        <p><strong>4.</strong> Le système envoie automatiquement une <strong>invitation par lien</strong></p>
-                        <p><strong>5.</strong> La personne suit le lien pour créer son compte (aucun code requis)</p>
-                    </div>
-
-                    <div class="step">
-                        <h4>🔗 Invitations par lien (remplace les codes)</h4>
-                        <ul style="padding-left: 20px;">
-                            <li>Chaque invitation génère un <strong>lien unique</strong> vers votre pharmacie</li>
-                            <li>Possibilité de définir une <strong>date d'expiration</strong> et un <strong>quota d'utilisations</strong></li>
-                            <li>Vous pouvez <strong>révoquer</strong> un lien à tout moment</li>
-                            <li>Le lien peut être envoyé par email, WhatsApp ou SMS</li>
-                        </ul>
-                    </div>
-
-                    <div class="step">
-                        <h4>🔧 Gérer les utilisateurs existants</h4>
-                        <p><strong>Le pharmacien peut :</strong></p>
-                        <ul style="padding-left: 20px;">
-                            <li>Voir tous les utilisateurs de sa pharmacie</li>
-                            <li>Activer/désactiver des comptes</li>
-                            <li>Verrouiller temporairement un accès</li>
-                            <li>Supprimer définitivement un utilisateur</li>
-                            <li>Voir les dernières connexions</li>
-                        </ul>
-                    </div>
-
-                    <div class="info">
-                        <strong>🔐 Sécurité :</strong> Seul le pharmacien peut gérer les utilisateurs. Les vendeuses ne voient que leur propre profil.
+                <div class="alert info">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Multi-stock :</strong> Si votre pharmacie utilise plusieurs stocks, double-cliquez sur les cartes pour basculer entre "Stock 1 uniquement" et "Stock 1 + Stock 2".
                     </div>
                 </div>
             </section>
 
-            <!-- Section FAQ -->
-            <section class="section" id="faq">
-                <div class="section-header">
-                    <span>❓</span>
-                    <span>Questions fréquentes</span>
+            <!-- Module Ventes -->
+            <section id="ventes" class="section">
+                <h2><i class="fas fa-shopping-cart"></i> Effectuer des ventes</h2>
+                <p>Le module ventes vous permet d'enregistrer les transactions clients avec mise à jour automatique du stock.</p>
+
+                <h3>Processus de vente</h3>
+                <div class="steps">
+                    <div class="step">
+                        <h4>Rechercher un produit</h4>
+                        <p>Tapez le nom du produit ou scannez son code-barres avec la caméra ou une douchette USB. Les produits correspondants apparaissent automatiquement.</p>
+                    </div>
+
+                    <div class="step">
+                        <h4>Sélectionner le lot</h4>
+                        <p>Choisissez le produit dans la liste. Les lots disponibles s'affichent automatiquement, triés par date de péremption (le plus proche d'abord).</p>
+                    </div>
+
+                    <div class="step">
+                        <h4>Définir la quantité</h4>
+                        <p>Saisissez la quantité vendue. Le système vérifie automatiquement la disponibilité en stock.</p>
+                    </div>
+
+                    <div class="step">
+                        <h4>Finaliser la vente</h4>
+                        <p>Vérifiez le montant total, choisissez le mode de paiement (espèces, carte, etc.) et validez. Le stock est mis à jour automatiquement.</p>
+                    </div>
                 </div>
-                <div class="section-content">
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(this)">
-                            <span>🔑 J'ai oublié mon mot de passe, que faire ?</span>
-                            <span class="faq-icon">+</span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Actuellement, il n'y a pas de fonction "mot de passe oublié" automatique. Contactez votre pharmacien (si vous êtes vendeuse) ou l'administrateur technique du système.</p>
-                        </div>
-                    </div>
 
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(this)">
-                            <span>🚫 Le message "Accès refusé" s'affiche, pourquoi ?</span>
-                            <span class="faq-icon">+</span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Plusieurs raisons possibles :</p>
-                            <ul style="padding-left: 20px;">
-                                <li><strong>Compte inactif :</strong> Le pharmacien doit réactiver votre compte</li>
-                                <li><strong>Mauvais rôle :</strong> Vous essayez d'accéder à un module réservé</li>
-                                <li><strong>Compte supprimé :</strong> Contactez l'administrateur</li>
-                            </ul>
-                        </div>
-                    </div>
+                <h3>Fonctionnalités avancées</h3>
+                <ul class="feature-list">
+                    <li><i class="fas fa-barcode"></i> <strong>Scanner codes-barres :</strong> Support caméra et douchettes USB</li>
+                    <li><i class="fas fa-layer-group"></i> <strong>Gestion des lots :</strong> Sélection automatique selon les dates de péremption</li>
+                    <li><i class="fas fa-calculator"></i> <strong>Remises :</strong> Application de remises en pourcentage ou montant fixe</li>
+                    <li><i class="fas fa-receipt"></i> <strong>Factures :</strong> Génération automatique avec traçabilité des lots</li>
+                    <li><i class="fas fa-undo"></i> <strong>Annulations :</strong> Possibilité d'annuler une vente (avec autorisation)</li>
+                </ul>
 
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(this)">
-                            <span>📦 Comment ajouter un nouveau produit ?</span>
-                            <span class="faq-icon">+</span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Il y a 2 façons :</p>
-                            <ul style="padding-left: 20px;">
-                                <li><strong>Via un achat :</strong> recommandé (traçabilité + prix d'achat)</li>
-                                <li><strong>Via le stock :</strong> ajout manuel</li>
-                            </ul>
-                            <p>La première méthode est préférable.</p>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(this)">
-                            <span>💰 Comment annuler une vente ?</span>
-                            <span class="faq-icon">+</span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Pour annuler une vente :</p>
-                            <ul style="padding-left: 20px;">
-                                <li><strong>1.</strong> Allez dans le module Ventes</li>
-                                <li><strong>2.</strong> Trouvez la vente concernée</li>
-                                <li><strong>3.</strong> Cliquez sur "Supprimer" (si autorisé)</li>
-                                <li><strong>4.</strong> Le stock sera automatiquement recalculé</li>
-                            </ul>
-                            <p><strong>Note :</strong> vous ne pouvez supprimer que vos propres ventes récentes.</p>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(this)">
-                            <span>🔄 Comment faire un retour produit ?</span>
-                            <span class="faq-icon">+</span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Pour traiter un retour :</p>
-                            <ul style="padding-left: 20px;">
-                                <li><strong>1.</strong> Trouvez la vente originale dans le module Ventes</li>
-                                <li><strong>2.</strong> Cliquez sur "Retour" sur la ligne du produit</li>
-                                <li><strong>3.</strong> Indiquez la quantité et la raison</li>
-                                <li><strong>4.</strong> Le docteur valide le retour</li>
-                                <li><strong>5.</strong> Une fois validé, le stock est remis à jour</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(this)">
-                            <span>📊 Les statistiques ne s'affichent pas, pourquoi ?</span>
-                            <span class="faq-icon">+</span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Vérifiez ces points :</p>
-                            <ul style="padding-left: 20px;">
-                                <li><strong>Connexion internet :</strong> nécessaire</li>
-                                <li><strong>Période sélectionnée :</strong> changez la période</li>
-                                <li><strong>Données disponibles :</strong> il faut avoir des ventes/achats</li>
-                                <li><strong>Permissions :</strong> vérifiez l'accès au dashboard</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(this)">
-                            <span>🆘 Que faire en cas de problème technique ?</span>
-                            <span class="faq-icon">+</span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>En cas de problème :</p>
-                            <ul style="padding-left: 20px;">
-                                <li><strong>1.</strong> Rafraîchissez la page (F5)</li>
-                                <li><strong>2.</strong> Déconnectez-vous et reconnectez-vous</li>
-                                <li><strong>3.</strong> Vérifiez votre connexion internet</li>
-                                <li><strong>4.</strong> Contactez votre pharmacien</li>
-                                <li><strong>5.</strong> En dernier recours, contactez le support technique</li>
-                            </ul>
-                        </div>
+                <div class="alert warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>
+                        <strong>Attention :</strong> Une fois validée, une vente met à jour le stock de manière irréversible. Vérifiez bien les quantités avant validation.
                     </div>
                 </div>
             </section>
 
-            <!-- Section Conseils pratiques -->
-            <section class="section">
-                <div class="section-header">
-                    <span>💡</span>
-                    <span>Conseils pour bien commencer</span>
+            <!-- Module Achats -->
+            <section id="achats" class="section">
+                <h2><i class="fas fa-truck"></i> Gérer les achats</h2>
+                
+                <div class="alert danger">
+                    <i class="fas fa-lock"></i>
+                    <div>
+                        <strong>Accès restreint :</strong> Ce module est exclusivement réservé aux pharmaciens (rôle Docteur) ou aux vendeuses avec permissions étendues.
+                    </div>
                 </div>
-                <div class="section-content">
-                    <div class="step">
-                        <h4>🎯 Ordre recommandé pour débuter</h4>
-                        <p><strong>Si vous êtes pharmacien :</strong></p>
-                        <ol style="padding-left: 20px;">
-                            <li>Créez votre société</li>
-                            <li>Invitez vos vendeuses <strong>par lien</strong></li>
-                            <li>Configurez les paramètres de base</li>
-                            <li>Enregistrez vos premiers achats fournisseurs</li>
-                            <li>Commencez à enregistrer les ventes</li>
-                            <li>Planifiez des sauvegardes régulières</li>
-                        </ol>
 
-                        <p><strong>Si vous êtes vendeuse :</strong></p>
-                        <ol style="padding-left: 20px;">
-                            <li>Demandez un <strong>lien d'invitation</strong> au pharmacien</li>
-                            <li>Inscrivez-vous via ce lien</li>
-                            <li>Explorez le dashboard pour comprendre l'activité</li>
-                            <li>Familiarisez-vous avec le module Ventes</li>
-                            <li>Apprenez à consulter le stock</li>
-                            <li>Pratiquez avec des ventes simples</li>
-                        </ol>
+                <h3>Créer un bon d'achat</h3>
+                <div class="steps">
+                    <div class="step">
+                        <h4>Informations générales</h4>
+                        <p>Commencez par sélectionner le fournisseur, la date de commande et le stock de destination (Stock 1 ou Stock 2).</p>
                     </div>
 
-                    <div class="highlight"><strong>⏰ Temps d'apprentissage :</strong> 2-3 heures pour maîtriser les bases, une semaine d'utilisation quotidienne pour être à l'aise.</div>
+                    <div class="step">
+                        <h4>Ajouter des articles</h4>
+                        <p>Pour chaque produit commandé, indiquez le nom, la quantité prévue et le prix unitaire estimé.</p>
+                    </div>
 
                     <div class="step">
-                        <h4>🔧 Bonnes pratiques</h4>
-                        <ul style="padding-left: 20px;">
-                            <li><strong>Sauvegardez régulièrement</strong> (au moins 1x/semaine)</li>
-                            <li><strong>Vérifiez les alertes</strong> du dashboard chaque jour</li>
-                            <li><strong>Mettez à jour les prix</strong> régulièrement</li>
-                            <li><strong>Contrôlez le stock</strong> physique vs informatique</li>
-                            <li><strong>Formez toute l'équipe</strong> aux fonctions de base</li>
+                        <h4>Enregistrer la commande</h4>
+                        <p>Sauvegardez le bon d'achat. Il apparaît dans la liste avec le statut "Commandé".</p>
+                    </div>
+                </div>
+
+                <h3>Réceptionner une livraison</h3>
+                <div class="steps">
+                    <div class="step">
+                        <h4>Ouvrir le bon d'achat</h4>
+                        <p>Cliquez sur "Réceptionner" depuis la liste des bons d'achat.</p>
+                    </div>
+
+                    <div class="step">
+                        <h4>Ajuster les quantités reçues</h4>
+                        <p>Modifiez les quantités selon la livraison réelle. Ajoutez les numéros de lot et dates de péremption pour chaque produit.</p>
+                    </div>
+
+                    <div class="step">
+                        <h4>Valider la réception</h4>
+                        <p>En validant, le stock est automatiquement mis à jour avec les nouveaux lots reçus.</p>
+                    </div>
+                </div>
+
+                <div class="alert success">
+                    <i class="fas fa-sync"></i>
+                    <div>
+                        <strong>Synchronisation :</strong> Toute réception met automatiquement à jour votre stock en temps réel.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Module Stock -->
+            <section id="stock" class="section">
+                <h2><i class="fas fa-boxes"></i> Consulter le stock</h2>
+                <p>Le module stock vous permet de consulter votre inventaire et effectuer diverses opérations selon vos permissions.</p>
+
+                <h3>Vue d'ensemble du stock</h3>
+                <ul class="feature-list">
+                    <li><i class="fas fa-search"></i> <strong>Recherche :</strong> Trouvez rapidement un produit par son nom</li>
+                    <li><i class="fas fa-filter"></i> <strong>Filtres :</strong> Filtrez par stock (S1/S2), statut, date de péremption</li>
+                    <li><i class="fas fa-sort"></i> <strong>Tri :</strong> Organisez par nom, quantité, date de péremption</li>
+                    <li><i class="fas fa-exclamation-triangle"></i> <strong>Alertes :</strong> Identification automatique des produits en rupture ou périmés</li>
+                </ul>
+
+                <h3>Informations affichées</h3>
+                <p>Pour chaque produit, vous visualisez :</p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-tag"></i> Nom et référence du produit</li>
+                    <li><i class="fas fa-warehouse"></i> Quantité disponible par stock</li>
+                    <li><i class="fas fa-calendar-alt"></i> Date de péremption des lots</li>
+                    <li><i class="fas fa-barcode"></i> Numéro de lot</li>
+                    <li><i class="fas fa-euro-sign"></i> Prix d'achat et prix de vente</li>
+                </ul>
+
+                <h3>Fonctionnalités avancées (Docteur)</h3>
+                <ul class="feature-list">
+                    <li><i class="fas fa-exchange-alt"></i> <strong>Transferts :</strong> Déplacer des produits entre Stock 1 et Stock 2</li>
+                    <li><i class="fas fa-undo"></i> <strong>Retours :</strong> Gérer les retours fournisseurs</li>
+                    <li><i class="fas fa-edit"></i> <strong>Corrections :</strong> Ajuster les quantités pour inventaire</li>
+                    <li><i class="fas fa-file-export"></i> <strong>Exports :</strong> Exporter les données stock vers Excel</li>
+                </ul>
+            </section>
+
+            <!-- Impressions -->
+            <section id="impressions" class="section">
+                <h2><i class="fas fa-print"></i> Impressions et documents</h2>
+                <p>L'application génère automatiquement tous les documents nécessaires à votre activité.</p>
+
+                <h3>Documents disponibles</h3>
+                <ul class="feature-list">
+                    <li><i class="fas fa-receipt"></i> <strong>Factures de vente :</strong> Avec détail des lots et traçabilité</li>
+                    <li><i class="fas fa-file-invoice"></i> <strong>Bons d'achat :</strong> Commandes et réceptions</li>
+                    <li><i class="fas fa-chart-bar"></i> <strong>Rapports de stock :</strong> État des stocks par période</li>
+                    <li><i class="fas fa-exclamation-circle"></i> <strong>Alertes :</strong> Listes des produits en rupture ou périmés</li>
+                </ul>
+
+                <h3>Personnalisation</h3>
+                <p>Le pharmacien peut personnaliser l'apparence des documents :</p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-heading"></i> En-tête personnalisé avec logo</li>
+                    <li><i class="fas fa-info-circle"></i> Informations de la pharmacie</li>
+                    <li><i class="fas fa-stamp"></i> Cachet numérique ou texte</li>
+                    <li><i class="fas fa-palette"></i> Couleurs et mise en forme</li>
+                </ul>
+
+                <div class="alert info">
+                    <i class="fas fa-print"></i>
+                    <div>
+                        <strong>Impression :</strong> Tous les documents sont optimisés pour l'impression A4 et s'adaptent automatiquement aux imprimantes ticket pour les factures.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Paramètres -->
+            <section id="parametres" class="section">
+                <h2><i class="fas fa-cog"></i> Paramètres</h2>
+                
+                <div class="alert warning">
+                    <i class="fas fa-lock"></i>
+                    <div>
+                        <strong>Accès restreint :</strong> La plupart des paramètres sont accessibles uniquement aux pharmaciens.
+                    </div>
+                </div>
+
+                <h3>Paramètres utilisateur</h3>
+                <p>Chaque utilisateur peut personnaliser :</p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-user"></i> Informations personnelles (nom, email)</li>
+                    <li><i class="fas fa-key"></i> Modification du mot de passe</li>
+                    <li><i class="fas fa-bell"></i> Préférences de notifications</li>
+                </ul>
+
+                <h3>Paramètres de la pharmacie (Docteur)</h3>
+                <ul class="feature-list">
+                    <li><i class="fas fa-store"></i> <strong>Informations générales :</strong> Nom, adresse, téléphone</li>
+                    <li><i class="fas fa-users-cog"></i> <strong>Gestion des utilisateurs :</strong> Invitations, rôles, permissions</li>
+                    <li><i class="fas fa-file-alt"></i> <strong>Personnalisation documents :</strong> En-têtes, cachets, formats</li>
+                    <li><i class="fas fa-database"></i> <strong>Sauvegarde :</strong> Export des données, restauration</li>
+                </ul>
+
+                <h3>Gestion des invitations</h3>
+                <p>Le pharmacien peut gérer l'équipe via le système d'invitations :</p>
+                <div class="steps">
+                    <div class="step">
+                        <h4>Créer une invitation</h4>
+                        <p>Générez un code d'invitation pour un nouvel employé en précisant son rôle et ses permissions.</p>
+                    </div>
+
+                    <div class="step">
+                        <h4>Partager le code</h4>
+                        <p>Transmettez le code de 8 caractères à la personne concernée (SMS, email, etc.).</p>
+                    </div>
+
+                    <div class="step">
+                        <h4>Suivi des invitations</h4>
+                        <p>Consultez l'état des invitations (en attente, utilisée, expirée) et gérez les accès.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ -->
+            <section id="faq" class="section">
+                <h2><i class="fas fa-question-circle"></i> Questions fréquentes</h2>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Comment scanner un code-barres ?</span>
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Dans le module ventes, cliquez sur l'icône caméra ou utilisez directement votre douchette USB. L'application reconnaît automatiquement les codes-barres et propose les produits correspondants.</p>
+                        <p><strong>Astuce :</strong> Assurez-vous d'avoir autorisé l'accès à la caméra dans votre navigateur.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Que faire si je me trompe dans une vente ?</span>
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Contactez immédiatement le pharmacien qui pourra annuler la vente erronée. L'annulation remet automatiquement à jour le stock.</p>
+                        <p><strong>Important :</strong> Plus vite l'erreur est signalée, plus facile sera la correction.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Comment consulter les ventes d'une période précise ?</span>
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sur le tableau de bord, utilisez les filtres de période en haut de l'écran. Vous pouvez choisir "Aujourd'hui", "Cette semaine", "Ce mois" ou définir une période personnalisée avec les dates de début et fin.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Pourquoi certains produits apparaissent en rouge dans le stock ?</span>
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Les produits en rouge indiquent :</p>
+                        <ul>
+                            <li><strong>Rouge foncé :</strong> Rupture de stock (quantité = 0)</li>
+                            <li><strong>Orange :</strong> Stock faible (moins de 5 unités)</li>
+                            <li><strong>Rouge clair :</strong> Proche de la date de péremption</li>
                         </ul>
+                        <p>Ces alertes vous aident à gérer votre inventaire efficacement.</p>
                     </div>
+                </div>
 
-                    <div class="info"><strong>📞 Support :</strong> commencez par cette documentation, puis contactez votre pharmacien ou l'administrateur.</div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Comment imprimer une facture ancienne ?</span>
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Rendez-vous dans l'historique des ventes, recherchez la transaction concernée et cliquez sur "Imprimer". Toutes les factures restent disponibles pour réimpression.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>L'application fonctionne-t-elle hors connexion ?</span>
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>L'application nécessite une connexion internet pour fonctionner car elle synchronise les données en temps réel entre tous les utilisateurs. En cas de coupure temporaire, les données sont sauvegardées localement et synchronisées dès le retour de la connexion.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Comment changer mon mot de passe ?</span>
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Cliquez sur votre nom en haut à droite, puis "Profil". Vous pouvez y modifier votre mot de passe, vos informations personnelles et vos préférences.</p>
+                    </div>
                 </div>
             </section>
-
-            <!-- Footer -->
-            <div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.8);">
-                <p>📚 Documentation créée pour faciliter l'utilisation du système de gestion de pharmacie</p>
-                <p style="font-size: 0.9rem; opacity: 0.7;">Version 1.1 — Inscriptions par <strong>lien d'invitation</strong> uniquement</p>
-            </div>
-        </div>
+        </main>
     </div>
 
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
     <script>
-        // Gestion du menu latéral
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const content = document.getElementById('content');
-            const overlay = document.getElementById('overlay');
-            sidebar.classList.toggle('open');
-            content.classList.toggle('shifted');
-            overlay.classList.toggle('active');
+        // Navigation mobile
+        function toggleNav() {
+            const menu = document.getElementById('navMenu');
+            menu.classList.toggle('active');
         }
 
-        // Scroll vers une section
+        // Smooth scroll vers section
         function scrollToSection(sectionId) {
             const element = document.getElementById(sectionId);
             if (element) {
-                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                if (window.innerWidth <= 768) toggleSidebar();
+                element.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                // Fermer menu mobile
+                const navMenu = document.getElementById('navMenu');
+                if (navMenu) {
+                    navMenu.classList.remove('active');
+                }
             }
         }
 
-        // Gestion des FAQ
+        // Scroll to top
+        function scrollToTop() {
+            window.scrollTo({ 
+                top: 0, 
+                behavior: 'smooth' 
+            });
+        }
+
+        // FAQ Toggle
         function toggleFaq(element) {
             const answer = element.nextElementSibling;
-            const icon = element.querySelector('.faq-icon');
-
+            const icon = element.querySelector('i');
+            
+            // Fermer les autres FAQ
             document.querySelectorAll('.faq-answer').forEach(faq => {
-                if (faq !== answer) faq.classList.remove('open');
+                if (faq !== answer && faq.classList.contains('open')) {
+                    faq.classList.remove('open');
+                    faq.previousElementSibling.querySelector('i').className = 'fas fa-plus';
+                }
             });
-            document.querySelectorAll('.faq-icon').forEach(ic => {
-                if (ic !== icon) ic.textContent = '+';
-            });
-
+            
+            // Toggle current FAQ
             answer.classList.toggle('open');
-            icon.textContent = answer.classList.contains('open') ? '−' : '+';
+            icon.className = answer.classList.contains('open') ? 'fas fa-minus' : 'fas fa-plus';
         }
 
-        // Barre de progression du scroll
-        function updateProgressBar() {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById('progressBar').style.width = scrolled + '%';
-        }
-
-        // Gestion responsive du menu
-        function handleResize() {
-            const sidebar = document.getElementById('sidebar');
-            const content = document.getElementById('content');
-            const overlay = document.getElementById('overlay');
-
-            if (window.innerWidth > 768) {
-                sidebar.classList.remove('open');
-                overlay.classList.remove('active');
-            } else {
-                content.classList.remove('shifted');
-            }
-        }
-
-        // Initialisation
-        document.addEventListener('DOMContentLoaded', function() {
-            showWelcomePopup();
-            window.addEventListener('scroll', updateProgressBar);
-            window.addEventListener('resize', handleResize);
-
-            document.querySelectorAll('.section').forEach((section, index) => {
-                section.style.animationDelay = (index * 0.1) + 's';
+        // Navigation active state
+        function updateActiveNav() {
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('.nav-menu a, .sidebar a');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 150 && rect.bottom >= 150) {
+                    currentSection = section.id;
+                }
             });
-
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                });
-            });
-
-            updateProgressBar();
-        });
-
-        // Popup d'accueil + animations
-        function showWelcomePopup() {
-            const popup = document.getElementById('welcomePopup');
-            const countdownElement = document.getElementById('countdown');
-            let timeLeft = 9;
-
-            createStars();
-            createShootingStars();
-            createMagicParticles();
-
-            setTimeout(() => { popup.classList.add('show'); }, 500);
-
-            const timer = setInterval(() => {
-                timeLeft--;
-                if (countdownElement) countdownElement.textContent = timeLeft;
-                if (timeLeft <= 0) { clearInterval(timer); hideWelcomePopup(); }
-            }, 1000);
-
-            popup.addEventListener('click', (e) => {
-                if (e.target === popup) { clearInterval(timer); hideWelcomePopup(); }
-            });
-
-            document.addEventListener('keydown', function escapeHandler(e) {
-                if (e.key === 'Escape') {
-                    clearInterval(timer);
-                    hideWelcomePopup();
-                    document.removeEventListener('keydown', escapeHandler);
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSection}`) {
+                    link.classList.add('active');
                 }
             });
         }
 
-        function createStars() {
-            const starsContainer = document.getElementById('starsContainer');
-            const starCount = 100;
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                const size = Math.random();
-                if (size > 0.8) star.classList.add('large');
-                else if (size > 0.5) star.classList.add('medium');
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.random() * 3 + 's';
-                starsContainer.appendChild(star);
+        // Back to top visibility
+        function updateBackToTop() {
+            const button = document.getElementById('backToTop');
+            if (window.scrollY > 300) {
+                button.classList.add('visible');
+            } else {
+                button.classList.remove('visible');
             }
         }
 
-        function createShootingStars() {
-            const starsContainer = document.getElementById('starsContainer');
-            function addShootingStar() {
-                const shootingStar = document.createElement('div');
-                shootingStar.className = 'shooting-star';
-                shootingStar.style.left = Math.random() * 100 + '%';
-                shootingStar.style.top = Math.random() * 50 + '%';
-                starsContainer.appendChild(shootingStar);
-                setTimeout(() => { shootingStar.remove(); }, 3000);
+        // Animation on scroll
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.section');
+            elements.forEach(element => {
+                const rect = element.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8) {
+                    element.classList.add('fade-in');
+                }
+            });
+        }
+
+        // Event listeners
+        window.addEventListener('scroll', () => {
+            updateActiveNav();
+            updateBackToTop();
+            animateOnScroll();
+        });
+
+        // Initial calls
+        document.addEventListener('DOMContentLoaded', () => {
+            updateActiveNav();
+            animateOnScroll();
+        });
+
+        // Fermer menu mobile au clic extérieur
+        document.addEventListener('click', (e) => {
+            const nav = document.getElementById('navMenu');
+            const toggle = document.querySelector('.nav-toggle');
+            
+            if (!nav.contains(e.target) && !toggle.contains(e.target)) {
+                nav.classList.remove('active');
             }
-            const shootingInterval = setInterval(addShootingStar, 2000);
-            setTimeout(() => { clearInterval(shootingInterval); }, 16000);
-        }
+        });
 
-        function createMagicParticles() {
-            const starsContainer = document.getElementById('starsContainer');
-            function addMagicParticle() {
-                const particle = document.createElement('div');
-                particle.className = 'magic-particle';
-                if (Math.random() > 0.5) particle.classList.add('sparkle');
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.bottom = '-10px';
-                starsContainer.appendChild(particle);
-                setTimeout(() => { particle.remove(); }, 4000);
-            }
-            const particleInterval = setInterval(addMagicParticle, 800);
-            setTimeout(() => { clearInterval(particleInterval); }, 16000);
-        }
-
-        function hideWelcomePopup() {
-            const popup = document.getElementById('welcomePopup');
-            popup.classList.add('fade-out');
-            setTimeout(() => { popup.style.display = 'none'; }, 500);
-        }
-
-        // Utilitaires
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => { alert('Copié dans le presse-papiers !'); });
-        }
-
-        // Easter egg : Konami Code
-        let konamiCode = [];
-        const konamiSequence = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','KeyB','KeyA'];
-        document.addEventListener('keydown', function(e) {
-            konamiCode.push(e.code);
-            if (konamiCode.length > konamiSequence.length) konamiCode.shift();
-            if (JSON.stringify(konamiCode) === JSON.stringify(konamiSequence)) {
-                document.body.style.filter = 'hue-rotate(180deg)';
-                alert('🎉 Mode secret activé ! Vous maîtrisez maintenant le système !');
-                setTimeout(() => { document.body.style.filter = 'none'; }, 5000);
-                konamiCode = [];
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.getElementById('navMenu').classList.remove('active');
+                // Fermer toutes les FAQ
+                document.querySelectorAll('.faq-answer.open').forEach(faq => {
+                    faq.classList.remove('open');
+                    faq.previousElementSibling.querySelector('i').className = 'fas fa-plus';
+                });
             }
         });
     </script>
 </body>
-</html>
+</html><!
