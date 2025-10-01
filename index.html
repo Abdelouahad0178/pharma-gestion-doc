@@ -1,1204 +1,708 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guide Utilisateur - Système de Gestion de Pharmacie</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏥%3C/text%3E%3C/svg%3E">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #667eea;
-            --secondary: #764ba2;
-            --accent: #4CAF50;
-            --danger: #f56565;
-            --warning: #ed8936;
-            --info: #4299e1;
-            --dark: #2d3748;
-            --light: #f7fafc;
-            --border: #e2e8f0;
-            --text: #2d3748;
-            --text-muted: #718096;
-            --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.1);
-            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: var(--text);
-            background: var(--light);
-            scroll-behavior: smooth;
-        }
-
-        /* Header */
-        .header {
-            background: var(--gradient);
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .header h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        /* Navigation */
-        .nav-container {
-            position: sticky;
-            top: 0;
-            background: white;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
-
-        .nav-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--primary);
-        }
-
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-            margin-left: auto;
-        }
-
-        .nav-menu a {
-            text-decoration: none;
-            color: var(--text);
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .nav-menu a:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .nav-menu a.active {
-            background: var(--gradient);
-            color: white;
-        }
-
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 3rem;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            position: sticky;
-            top: 120px;
-            height: fit-content;
-            background: white;
-            border-radius: 1rem;
-            padding: 2rem;
-            box-shadow: var(--shadow);
-        }
-
-        .sidebar h3 {
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            font-size: 1.2rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .sidebar ul {
-            list-style: none;
-        }
-
-        .sidebar li {
-            margin-bottom: 0.5rem;
-        }
-
-        .sidebar a {
-            text-decoration: none;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            transition: var(--transition);
-            font-size: 0.95rem;
-        }
-
-        .sidebar a:hover {
-            background: var(--gradient);
-            color: white;
-            transform: translateX(5px);
-        }
-
-        .sidebar a.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* Main Content */
-        .main-content {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: var(--shadow);
-            overflow: hidden;
-        }
-
-        .section {
-            padding: 3rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .section:last-child {
-            border-bottom: none;
-        }
-
-        .section h2 {
-            color: var(--dark);
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .section h2 i {
-            background: var(--gradient);
-            color: white;
-            width: 3rem;
-            height: 3rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .section h3 {
-            color: var(--primary);
-            font-size: 1.5rem;
-            margin: 2rem 0 1rem 0;
-        }
-
-        .section p {
-            margin-bottom: 1.5rem;
-            color: var(--text-muted);
-            line-height: 1.7;
-        }
-
-        /* Cards */
-        .card {
-            background: white;
-            border-radius: 1rem;
-            padding: 2rem;
-            margin: 1.5rem 0;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            transition: var(--transition);
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        /* Role Cards */
-        .role-card {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .role-card.docteur {
-            border-left: 4px solid var(--accent);
-            background: linear-gradient(135deg, #f0fff4, #f0fff4);
-        }
-
-        .role-card.vendeuse {
-            border-left: 4px solid var(--info);
-            background: linear-gradient(135deg, #f0f8ff, #f0f8ff);
-        }
-
-        .role-card h4 {
-            color: var(--dark);
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-
-        /* Feature Cards */
-        .feature-card {
-            text-align: center;
-            padding: 2.5rem;
-            border: 2px solid var(--border);
-            border-radius: 1rem;
-            transition: var(--transition);
-        }
-
-        .feature-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-5px);
-        }
-
-        .feature-card i {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-        }
-
-        .feature-card h4 {
-            color: var(--dark);
-            margin-bottom: 1rem;
-        }
-
-        /* Steps */
-        .steps {
-            counter-reset: step-counter;
-        }
-
-        .step {
-            counter-increment: step-counter;
-            position: relative;
-            margin: 2rem 0;
-            padding: 2rem;
-            background: linear-gradient(135deg, #fafafa, #f5f5f5);
-            border-radius: 1rem;
-            border-left: 4px solid var(--primary);
-        }
-
-        .step::before {
-            content: counter(step-counter);
-            position: absolute;
-            top: -10px;
-            left: 20px;
-            background: var(--gradient);
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .step h4 {
-            color: var(--dark);
-            margin-bottom: 1rem;
-            margin-top: 0.5rem;
-        }
-
-        /* Alerts */
-        .alert {
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            margin: 1.5rem 0;
-            border: 1px solid;
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-        }
-
-        .alert i {
-            font-size: 1.2rem;
-            margin-top: 0.2rem;
-        }
-
-        .alert.info {
-            background: #ebf8ff;
-            border-color: #90cdf4;
-            color: #2c5282;
-        }
-
-        .alert.info i {
-            color: var(--info);
-        }
-
-        .alert.warning {
-            background: #fefcbf;
-            border-color: #f6e05e;
-            color: #744210;
-        }
-
-        .alert.warning i {
-            color: var(--warning);
-        }
-
-        .alert.success {
-            background: #f0fff4;
-            border-color: #9ae6b4;
-            color: #22543d;
-        }
-
-        .alert.success i {
-            color: var(--accent);
-        }
-
-        .alert.danger {
-            background: #fed7d7;
-            border-color: #feb2b2;
-            color: #742a2a;
-        }
-
-        .alert.danger i {
-            color: var(--danger);
-        }
-
-        /* Lists */
-        .feature-list {
-            list-style: none;
-            margin: 1.5rem 0;
-        }
-
-        .feature-list li {
-            padding: 0.75rem 0;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .feature-list li i {
-            color: var(--accent);
-            width: 20px;
-        }
-
-        /* FAQ */
-        .faq-item {
-            background: white;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-            box-shadow: var(--shadow);
-            overflow: hidden;
-        }
-
-        .faq-question {
-            padding: 1.5rem;
-            background: #f8fafc;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-            color: var(--dark);
-            transition: var(--transition);
-        }
-
-        .faq-question:hover {
-            background: #edf2f7;
-        }
-
-        .faq-question i {
-            color: var(--primary);
-            transition: var(--transition);
-        }
-
-        .faq-answer {
-            padding: 0;
-            max-height: 0;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .faq-answer.open {
-            padding: 1.5rem;
-            max-height: 500px;
-        }
-
-        /* Back to top */
-        .back-to-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 50px;
-            height: 50px;
-            background: var(--gradient);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.2rem;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-            z-index: 100;
-        }
-
-        .back-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .back-to-top:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-
-            .nav-toggle {
-                display: block;
-            }
-
-            .nav-menu {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: white;
-                flex-direction: column;
-                box-shadow: var(--shadow);
-                gap: 0;
-            }
-
-            .nav-menu.active {
-                display: flex;
-            }
-
-            .nav-menu a {
-                padding: 1rem;
-                border-bottom: 1px solid var(--border);
-            }
-
-            .container {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-                padding: 1rem;
-            }
-
-            .sidebar {
-                position: static;
-            }
-
-            .section {
-                padding: 2rem 1.5rem;
-            }
-
-            .section h2 {
-                font-size: 2rem;
-                flex-direction: column;
-                text-align: center;
-                gap: 0.5rem;
-            }
-
-            .card-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .fade-in {
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--light);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--secondary);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guide Utilisateur – Système de Gestion de Pharmacie</title>
+  <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%A5%3C/text%3E%3C/svg%3E">
+  <!-- Font Awesome 6 -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    /* Reset & tokens */
+    *,*::before,*::after { box-sizing: border-box; }
+    html,body { margin:0; }
+    :root{
+      --primary:#667eea; --secondary:#764ba2; --accent:#4CAF50;
+      --danger:#f56565; --warning:#ed8936; --info:#4299e1;
+      --dark:#2d3748; --light:#f7fafc; --border:#e2e8f0;
+      --text:#2d3748; --text-muted:#718096;
+      --shadow:0 10px 25px rgba(0,0,0,.1);
+      --shadow-lg:0 20px 40px rgba(0,0,0,.12);
+      --gradient:linear-gradient(135deg,var(--primary),var(--secondary));
+      --transition:all .25s cubic-bezier(.4,0,.2,1);
+      --header-h:82px;
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    }
+
+    body{
+      font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+      color:var(--text); background:var(--light); line-height:1.6;
+      scroll-behavior:smooth;
+    }
+
+    /* Header */
+    .header{background:var(--gradient); color:#fff; padding:2rem 1rem; text-align:center; box-shadow:var(--shadow-lg);}
+    .header h1{font-size:clamp(1.8rem,3.5vw,3rem); margin:.2rem 0 .4rem; font-weight:800; letter-spacing:-.02em}
+    .header p{opacity:.95; font-size:clamp(.95rem,2.4vw,1.15rem)}
+
+    /* Top nav */
+    .nav-container{position:sticky; top:0; inset-inline:0; z-index:100; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.06)}
+    .nav{max-width:1200px; margin:auto; padding:1rem; display:flex; align-items:center; gap:1rem}
+    .brand{font-weight:800; color:var(--primary); letter-spacing:.5px}
+    .nav-toggle{display:none; margin-left:auto; border:0; background:transparent; font-size:1.5rem; color:var(--primary); cursor:pointer}
+    .nav-menu{margin-left:auto; list-style:none; display:flex; gap:1rem}
+    .nav-menu a{
+      display:inline-block; text-decoration:none; color:var(--text); font-weight:600;
+      padding:.55rem .9rem; border-radius:.6rem; transition:var(--transition)
+    }
+    .nav-menu a:hover{background:var(--primary); color:#fff; transform:translateY(-2px)}
+    .nav-menu a.active{background:var(--gradient); color:#fff}
+
+    /* Layout */
+    .container{max-width:1200px; margin:auto; padding:2rem 1.25rem; display:grid; grid-template-columns:300px 1fr; gap:2rem}
+    .main-content{background:#fff; border-radius:1rem; box-shadow:var(--shadow); overflow:hidden}
+
+    /* Sidebar */
+    .sidebar{position:sticky; top:calc(var(--header-h) + 16px); align-self:start; background:#fff; border-radius:1rem; padding:1.25rem 1.25rem 1rem; box-shadow:var(--shadow)}
+    .sidebar h3{color:var(--primary); margin:.25rem 0 1rem; font-size:1.1rem; padding-bottom:.5rem; border-bottom:2px solid var(--border)}
+    .sidebar ul{list-style:none}
+    .sidebar li{margin-bottom:.4rem}
+    .sidebar a{
+      display:flex; gap:.6rem; align-items:center; text-decoration:none; color:var(--text-muted);
+      padding:.55rem .65rem; border-radius:.6rem; transition:var(--transition); font-size:.95rem
+    }
+    .sidebar a:hover{background:var(--gradient); color:#fff; transform:translateX(5px)}
+    .sidebar a.active{background:var(--primary); color:#fff}
+
+    /* Sections */
+    .section{scroll-margin-top:calc(var(--header-h) + 12px); padding:2.2rem 1.75rem; border-bottom:1px solid var(--border)}
+    .section:last-child{border-bottom:0}
+    .section h2{
+      display:flex; align-items:center; gap:1rem; margin:0 0 .6rem; color:var(--dark);
+      font-size:clamp(1.4rem,3.2vw,2.2rem); letter-spacing:-.01em
+    }
+    .section h2 i{
+      display:grid; place-items:center; width:2.6rem; height:2.6rem; border-radius:50%;
+      background:var(--gradient); color:#fff; font-size:1.35rem
+    }
+    .section h3{color:var(--primary); margin:1.5rem 0 .6rem; font-size:clamp(1.05rem,2.2vw,1.35rem)}
+    .section p{color:var(--text-muted); margin:.75rem 0 1rem}
+
+    /* Cards */
+    .card{background:#fff; border:1px solid var(--border); border-radius:1rem; padding:1.25rem; margin:1rem 0; box-shadow:var(--shadow); transition:var(--transition)}
+    .card:hover{transform:translateY(-2px); box-shadow:var(--shadow-lg)}
+    .card-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; margin:1rem 0}
+
+    /* Role cards */
+    .role-card{position:relative; overflow:hidden}
+    .role-card.docteur{border-left:4px solid var(--accent); background:linear-gradient(135deg,#f0fff4,#f0fff4)}
+    .role-card.vendeuse{border-left:4px solid var(--info); background:linear-gradient(135deg,#f0f8ff,#f0f8ff)}
+    .role-card h4{margin:0 0 .6rem; color:var(--dark); font-size:1.15rem}
+
+    /* Feature card */
+    .feature-card{text-align:center; padding:1.8rem; border:2px solid var(--border); border-radius:1rem; transition:var(--transition)}
+    .feature-card:hover{border-color:var(--primary); transform:translateY(-5px)}
+    .feature-card i{font-size:2.2rem; color:var(--primary); margin-bottom:.9rem}
+    .feature-card h4{margin:.25rem 0 .35rem; color:var(--dark)}
+
+    /* Steps */
+    .steps{counter-reset:step}
+    .step{counter-increment:step; position:relative; margin:1rem 0; padding:1rem .9rem 1rem 1.1rem; background:linear-gradient(135deg,#fafafa,#f5f5f5); border-left:4px solid var(--primary); border-radius:1rem}
+    .step::before{
+      content:counter(step); position:absolute; top:-10px; left:16px; width:28px; height:28px; border-radius:50%;
+      display:grid; place-items:center; color:#fff; background:var(--gradient); font-weight:700; font-size:.95rem
+    }
+    .step h4{margin:.3rem 0 .4rem; color:var(--dark)}
+
+    /* Alerts */
+    .alert{display:flex; gap:.8rem; align-items:flex-start; border-radius:.75rem; border:1px solid; padding:1rem; margin:1rem 0}
+    .alert i{margin-top:.15rem}
+    .alert.info{background:#ebf8ff; border-color:#90cdf4; color:#2c5282}
+    .alert.warning{background:#fefcbf; border-color:#f6e05e; color:#744210}
+    .alert.success{background:#f0fff4; border-color:#9ae6b4; color:#22543d}
+    .alert.danger{background:#fed7d7; border-color:#feb2b2; color:#742a2a}
+
+    /* Lists */
+    .feature-list{list-style:none; margin:1rem 0; padding:0}
+    .feature-list li{display:flex; align-items:center; gap:.6rem; padding:.4rem 0}
+    .feature-list i{color:var(--accent); width:20px}
+
+    /* FAQ */
+    .faq-item{background:#fff; border-radius:.75rem; box-shadow:var(--shadow); overflow:hidden; margin:.7rem 0}
+    .faq-question{display:flex; justify-content:space-between; gap:.6rem; align-items:center; cursor:pointer; padding:1rem 1.1rem; background:#f8fafc; font-weight:700; color:var(--dark); transition:var(--transition)}
+    .faq-question:hover{background:#edf2f7}
+    .faq-question i{color:var(--primary); transition:var(--transition)}
+    .faq-answer{max-height:0; overflow:hidden; padding:0 1.1rem; transition:max-height .3s ease}
+    .faq-answer.open{padding:1rem 1.1rem; max-height:500px}
+
+    /* Back to top */
+    .back-to-top{
+      position:fixed; bottom:1.2rem; right:1.2rem; width:50px; height:50px; border-radius:50%;
+      border:0; background:var(--gradient); color:#fff; cursor:pointer; font-size:1.1rem; box-shadow:var(--shadow);
+      opacity:0; visibility:hidden; transition:var(--transition); z-index:110
+    }
+    .back-to-top.visible{opacity:1; visibility:visible}
+    .back-to-top:hover{transform:translateY(-3px); box-shadow:var(--shadow-lg)}
+
+    /* Responsive */
+    @media (max-width:992px){ .container{grid-template-columns:1fr; gap:1.25rem} .sidebar{position:static} }
+    @media (max-width:768px){
+      .nav-toggle{display:inline-grid; place-items:center}
+      .nav-menu{display:none; position:absolute; top:100%; left:0; right:0; background:#fff; flex-direction:column; gap:0; box-shadow:var(--shadow)}
+      .nav-menu.active{display:flex}
+      .nav-menu a{padding:1rem; border-bottom:1px solid var(--border)}
+      .section{padding:1.6rem 1.2rem}
+      .section h2{flex-direction:column; text-align:center; gap:.5rem}
+      .card-grid{grid-template-columns:1fr}
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar{width:8px} ::-webkit-scrollbar-track{background:var(--light)}
+    ::-webkit-scrollbar-thumb{background:var(--primary); border-radius:4px}
+    ::-webkit-scrollbar-thumb:hover{background:var(--secondary)}
+
+    /* Animations */
+    @keyframes fadeInUp{from{opacity:0; transform:translateY(26px)} to{opacity:1; transform:translateY(0)}}
+    .fade-in{animation:fadeInUp .6s ease-out}
+
+    /* Print */
+    @media print{
+      .nav-container,.sidebar,.back-to-top{display:none!important}
+      .container{max-width:100%; padding:0}
+      .main-content{box-shadow:none}
+      .section{page-break-inside:avoid}
+    }
+  </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container-fluid">
-            <h1><i class="fas fa-hospital"></i> Guide Utilisateur</h1>
-            <p>Système de Gestion de Pharmacie - Comment utiliser votre application</p>
-        </div>
-    </header>
-
-    <!-- Navigation -->
-    <nav class="nav-container">
-        <div class="nav">
-            <button class="nav-toggle" onclick="toggleNav()">
-                <i class="fas fa-bars"></i>
-            </button>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="#introduction" onclick="scrollToSection('introduction')">Introduction</a></li>
-                <li><a href="#getting-started" onclick="scrollToSection('getting-started')">Démarrage</a></li>
-                <li><a href="#modules" onclick="scrollToSection('modules')">Modules</a></li>
-                <li><a href="#utilisation" onclick="scrollToSection('utilisation')">Utilisation</a></li>
-                <li><a href="#faq" onclick="scrollToSection('faq')">FAQ</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Main Container -->
-    <div class="container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <h3><i class="fas fa-list"></i> Sommaire</h3>
-            <ul>
-                <li><a href="#introduction"><i class="fas fa-info-circle"></i> Introduction</a></li>
-                <li><a href="#getting-started"><i class="fas fa-play"></i> Premier démarrage</a></li>
-                <li><a href="#roles"><i class="fas fa-users"></i> Rôles utilisateurs</a></li>
-                <li><a href="#connexion"><i class="fas fa-sign-in-alt"></i> Connexion</a></li>
-                <li><a href="#dashboard"><i class="fas fa-chart-dashboard"></i> Tableau de bord</a></li>
-                <li><a href="#ventes"><i class="fas fa-shopping-cart"></i> Effectuer des ventes</a></li>
-                <li><a href="#achats"><i class="fas fa-truck"></i> Gérer les achats</a></li>
-                <li><a href="#stock"><i class="fas fa-boxes"></i> Consulter le stock</a></li>
-                <li><a href="#impressions"><i class="fas fa-print"></i> Impressions</a></li>
-                <li><a href="#parametres"><i class="fas fa-cog"></i> Paramètres</a></li>
-                <li><a href="#faq"><i class="fas fa-question-circle"></i> Questions fréquentes</a></li>
-            </ul>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Introduction -->
-            <section id="introduction" class="section fade-in">
-                <h2><i class="fas fa-info-circle"></i> Introduction</h2>
-                <p>Ce guide vous accompagne dans l'utilisation quotidienne de votre système de gestion de pharmacie. Vous découvrirez comment naviguer dans l'application, effectuer des ventes, gérer vos achats et consulter votre stock.</p>
-
-                <div class="card-grid">
-                    <div class="feature-card">
-                        <i class="fas fa-chart-line"></i>
-                        <h4>Suivi en temps réel</h4>
-                        <p>Visualisez vos performances avec des statistiques mises à jour automatiquement.</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-mobile-alt"></i>
-                        <h4>Interface intuitive</h4>
-                        <p>Une interface simple et moderne, utilisable sur ordinateur, tablette et mobile.</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-shield-alt"></i>
-                        <h4>Sécurisé</h4>
-                        <p>Vos données sont protégées avec des accès personnalisés selon votre rôle.</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-sync"></i>
-                        <h4>Synchronisation</h4>
-                        <p>Tous vos appareils sont synchronisés en temps réel pour une expérience fluide.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Premier démarrage -->
-            <section id="getting-started" class="section">
-                <h2><i class="fas fa-play"></i> Premier démarrage</h2>
-                <p>Pour accéder à l'application, vous devez disposer d'un code d'invitation fourni par le pharmacien responsable.</p>
-
-                <div class="steps">
-                    <div class="step">
-                        <h4>Inscription avec code d'invitation</h4>
-                        <p>Rendez-vous sur la page d'inscription et saisissez le code d'invitation à 8 caractères que vous avez reçu. Ce code vous connecte automatiquement à la bonne pharmacie.</p>
-                    </div>
-
-                    <div class="step">
-                        <h4>Création de votre compte</h4>
-                        <p>Remplissez vos informations personnelles : nom, prénom, email et mot de passe. Votre rôle (Docteur ou Vendeuse) est automatiquement attribué selon l'invitation.</p>
-                    </div>
-
-                    <div class="step">
-                        <h4>Première connexion</h4>
-                        <p>Une fois inscrit, connectez-vous avec votre email et mot de passe. Vous accédez directement au tableau de bord de votre pharmacie.</p>
-                    </div>
-                </div>
-
-                <div class="alert info">
-                    <i class="fas fa-info-circle"></i>
-                    <div>
-                        <strong>Important :</strong> Sans code d'invitation valide, il est impossible de créer un compte. Contactez votre pharmacien si vous n'avez pas reçu de code.
-                    </div>
-                </div>
-            </section>
-
-            <!-- Rôles utilisateurs -->
-            <section id="roles" class="section">
-                <h2><i class="fas fa-users"></i> Rôles utilisateurs</h2>
-                <p>L'application propose deux types d'accès selon votre fonction dans la pharmacie.</p>
-
-                <div class="card-grid">
-                    <div class="card role-card docteur">
-                        <h4><i class="fas fa-user-md"></i> Docteur (Pharmacien)</h4>
-                        <p>Accès complet à toutes les fonctionnalités de l'application.</p>
-                        <ul class="feature-list">
-                            <li><i class="fas fa-check"></i> Tableau de bord complet</li>
-                            <li><i class="fas fa-check"></i> Gestion des ventes</li>
-                            <li><i class="fas fa-check"></i> Module achats et réceptions</li>
-                            <li><i class="fas fa-check"></i> Gestion du stock</li>
-                            <li><i class="fas fa-check"></i> Administration des utilisateurs</li>
-                            <li><i class="fas fa-check"></i> Paramètres de la pharmacie</li>
-                            <li><i class="fas fa-check"></i> Tous les rapports et statistiques</li>
-                        </ul>
-                    </div>
-
-                    <div class="card role-card vendeuse">
-                        <h4><i class="fas fa-user"></i> Vendeuse</h4>
-                        <p>Accès optimisé pour les activités de vente et service client.</p>
-                        <ul class="feature-list">
-                            <li><i class="fas fa-check"></i> Tableau de bord personnel</li>
-                            <li><i class="fas fa-check"></i> Module ventes complet</li>
-                            <li><i class="fas fa-check"></i> Consultation du stock</li>
-                            <li><i class="fas fa-check"></i> Impression des documents</li>
-                            <li><i class="fas fa-check"></i> Statistiques de vente</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="alert success">
-                    <i class="fas fa-key"></i>
-                    <div>
-                        <strong>Permissions étendues :</strong> Le pharmacien peut accorder des permissions supplémentaires aux vendeuses (accès aux achats, paramètres, etc.) selon les besoins.
-                    </div>
-                </div>
-            </section>
-
-            <!-- Connexion -->
-            <section id="connexion" class="section">
-                <h2><i class="fas fa-sign-in-alt"></i> Connexion et navigation</h2>
-                
-                <h3>Se connecter</h3>
-                <div class="steps">
-                    <div class="step">
-                        <h4>Page de connexion</h4>
-                        <p>Saisissez votre email et votre mot de passe sur la page d'accueil.</p>
-                    </div>
-
-                    <div class="step">
-                        <h4>Sélection automatique</h4>
-                        <p>Vous êtes automatiquement dirigé vers votre pharmacie. Si vous avez accès à plusieurs pharmacies, choisissez celle souhaitée.</p>
-                    </div>
-                </div>
-
-                <h3>Navigation dans l'application</h3>
-                <p>L'application est organisée en modules accessibles via le menu principal :</p>
-                <ul class="feature-list">
-                    <li><i class="fas fa-home"></i> <strong>Accueil :</strong> Tableau de bord et statistiques</li>
-                    <li><i class="fas fa-shopping-cart"></i> <strong>Ventes :</strong> Enregistrer les ventes</li>
-                    <li><i class="fas fa-truck"></i> <strong>Achats :</strong> Gérer les commandes et réceptions (Docteur)</li>
-                    <li><i class="fas fa-boxes"></i> <strong>Stock :</strong> Consulter et gérer l'inventaire</li>
-                    <li><i class="fas fa-cog"></i> <strong>Paramètres :</strong> Configuration de la pharmacie</li>
-                </ul>
-            </section>
-
-            <!-- Tableau de bord -->
-            <section id="dashboard" class="section">
-                <h2><i class="fas fa-chart-dashboard"></i> Utiliser le tableau de bord</h2>
-                <p>Le tableau de bord vous donne une vue d'ensemble de l'activité de votre pharmacie.</p>
-
-                <h3>Informations principales</h3>
-                <ul class="feature-list">
-                    <li><i class="fas fa-euro-sign"></i> <strong>Chiffre d'affaires :</strong> Total des ventes sur la période sélectionnée</li>
-                    <li><i class="fas fa-receipt"></i> <strong>Nombre de ventes :</strong> Compteur des transactions</li>
-                    <li><i class="fas fa-truck"></i> <strong>Montant des achats :</strong> Total des approvisionnements</li>
-                    <li><i class="fas fa-wallet"></i> <strong>Caisse :</strong> Montant disponible en caisse</li>
-                    <li><i class="fas fa-boxes"></i> <strong>Stock critique :</strong> Produits en rupture ou bientôt épuisés</li>
-                </ul>
-
-                <h3>Filtres de période</h3>
-                <p>Utilisez les boutons en haut du tableau de bord pour filtrer les données :</p>
-                <ul class="feature-list">
-                    <li><i class="fas fa-calendar-day"></i> Aujourd'hui</li>
-                    <li><i class="fas fa-calendar-week"></i> Cette semaine</li>
-                    <li><i class="fas fa-calendar"></i> Ce mois</li>
-                    <li><i class="fas fa-calendar-alt"></i> Période personnalisée</li>
-                </ul>
-
-                <div class="alert info">
-                    <i class="fas fa-info-circle"></i>
-                    <div>
-                        <strong>Multi-stock :</strong> Si votre pharmacie utilise plusieurs stocks, double-cliquez sur les cartes pour basculer entre "Stock 1 uniquement" et "Stock 1 + Stock 2".
-                    </div>
-                </div>
-            </section>
-
-            <!-- Module Ventes -->
-            <section id="ventes" class="section">
-                <h2><i class="fas fa-shopping-cart"></i> Effectuer des ventes</h2>
-                <p>Le module ventes vous permet d'enregistrer les transactions clients avec mise à jour automatique du stock.</p>
-
-                <h3>Processus de vente</h3>
-                <div class="steps">
-                    <div class="step">
-                        <h4>Rechercher un produit</h4>
-                        <p>Tapez le nom du produit ou scannez son code-barres avec la caméra ou une douchette USB. Les produits correspondants apparaissent automatiquement.</p>
-                    </div>
-
-                    <div class="step">
-                        <h4>Sélectionner le lot</h4>
-                        <p>Choisissez le produit dans la liste. Les lots disponibles s'affichent automatiquement, triés par date de péremption (le plus proche d'abord).</p>
-                    </div>
-
-                    <div class="step">
-                        <h4>Définir la quantité</h4>
-                        <p>Saisissez la quantité vendue. Le système vérifie automatiquement la disponibilité en stock.</p>
-                    </div>
-
-                    <div class="step">
-                        <h4>Finaliser la vente</h4>
-                        <p>Vérifiez le montant total, choisissez le mode de paiement (espèces, carte, etc.) et validez. Le stock est mis à jour automatiquement.</p>
-                    </div>
-                </div>
-
-                <h3>Fonctionnalités avancées</h3>
-                <ul class="feature-list">
-                    <li><i class="fas fa-barcode"></i> <strong>Scanner codes-barres :</strong> Support caméra et douchettes USB</li>
-                    <li><i class="fas fa-layer-group"></i> <strong>Gestion des lots :</strong> Sélection automatique selon les dates de péremption</li>
-                    <li><i class="fas fa-calculator"></i> <strong>Remises :</strong> Application de remises en pourcentage ou montant fixe</li>
-                    <li><i class="fas fa-receipt"></i> <strong>Factures :</strong> Génération automatique avec traçabilité des lots</li>
-                    <li><i class="fas fa-undo"></i> <strong>Annulations :</strong> Possibilité d'annuler une vente (avec autorisation)</li>
-                </ul>
-
-                <div class="alert warning">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <div>
-                        <strong>Attention :</strong> Une fois validée, une vente met à jour le stock de manière irréversible. Vérifiez bien les quantités avant validation.
-                    </div>
-                </div>
-            </section>
-
-            <!-- Module Achats -->
-            <section id="achats" class="section">
-                <h2><i class="fas fa-truck"></i> Gérer les achats</h2>
-                
-                <div class="alert danger">
-                    <i class="fas fa-lock"></i>
-                    <div>
-                        <strong>Accès restreint :</strong> Ce module est exclusivement réservé aux pharmaciens (rôle Docteur) ou aux vendeuses avec permissions étendues.
-                    </div>
-                </div>
-
-                <h3>Créer un bon d'achat</h3>
-                <div class="steps">
-                    <div class="step">
-                        <h4>Informations générales</h4>
-                        <p>Commencez par sélectionner le fournisseur, la date de commande et le stock de destination (Stock 1 ou Stock 2).</p>
-                    </div>
-
-                    <div class="step">
-                        <h4>Ajouter des articles</h4>
-                        <p>Pour chaque produit commandé, indiquez le nom, la quantité prévue et le prix unitaire estimé.</p>
-                    </div>
-
-                    <div class="step">
-                        <h4>Enregistrer la commande</h4>
-                        <p>Sauvegardez le bon d'achat. Il apparaît dans la liste avec le statut "Commandé".</p>
-                    </div>
-                </div>
-
-                <h3>Réceptionner une livraison</h3>
-                <div class="steps">
-                    <div class="step">
-                        <h4>Ouvrir le bon d'achat</h4>
-                        <p>Cliquez sur "Réceptionner" depuis la liste des bons d'achat.</p>
-                    </div>
-
-                    <div class="step">
-                        <h4>Ajuster les quantités reçues</h4>
-                        <p>Modifiez les quantités selon la livraison réelle. Ajoutez les numéros de lot et dates de péremption pour chaque produit.</p>
-                    </div>
-
-                    <div class="step">
-                        <h4>Valider la réception</h4>
-                        <p>En validant, le stock est automatiquement mis à jour avec les nouveaux lots reçus.</p>
-                    </div>
-                </div>
-
-                <div class="alert success">
-                    <i class="fas fa-sync"></i>
-                    <div>
-                        <strong>Synchronisation :</strong> Toute réception met automatiquement à jour votre stock en temps réel.
-                    </div>
-                </div>
-            </section>
-
-            <!-- Module Stock -->
-            <section id="stock" class="section">
-                <h2><i class="fas fa-boxes"></i> Consulter le stock</h2>
-                <p>Le module stock vous permet de consulter votre inventaire et effectuer diverses opérations selon vos permissions.</p>
-
-                <h3>Vue d'ensemble du stock</h3>
-                <ul class="feature-list">
-                    <li><i class="fas fa-search"></i> <strong>Recherche :</strong> Trouvez rapidement un produit par son nom</li>
-                    <li><i class="fas fa-filter"></i> <strong>Filtres :</strong> Filtrez par stock (S1/S2), statut, date de péremption</li>
-                    <li><i class="fas fa-sort"></i> <strong>Tri :</strong> Organisez par nom, quantité, date de péremption</li>
-                    <li><i class="fas fa-exclamation-triangle"></i> <strong>Alertes :</strong> Identification automatique des produits en rupture ou périmés</li>
-                </ul>
-
-                <h3>Informations affichées</h3>
-                <p>Pour chaque produit, vous visualisez :</p>
-                <ul class="feature-list">
-                    <li><i class="fas fa-tag"></i> Nom et référence du produit</li>
-                    <li><i class="fas fa-warehouse"></i> Quantité disponible par stock</li>
-                    <li><i class="fas fa-calendar-alt"></i> Date de péremption des lots</li>
-                    <li><i class="fas fa-barcode"></i> Numéro de lot</li>
-                    <li><i class="fas fa-euro-sign"></i> Prix d'achat et prix de vente</li>
-                </ul>
-
-                <h3>Fonctionnalités avancées (Docteur)</h3>
-                <ul class="feature-list">
-                    <li><i class="fas fa-exchange-alt"></i> <strong>Transferts :</strong> Déplacer des produits entre Stock 1 et Stock 2</li>
-                    <li><i class="fas fa-undo"></i> <strong>Retours :</strong> Gérer les retours fournisseurs</li>
-                    <li><i class="fas fa-edit"></i> <strong>Corrections :</strong> Ajuster les quantités pour inventaire</li>
-                    <li><i class="fas fa-file-export"></i> <strong>Exports :</strong> Exporter les données stock vers Excel</li>
-                </ul>
-            </section>
-
-            <!-- Impressions -->
-            <section id="impressions" class="section">
-                <h2><i class="fas fa-print"></i> Impressions et documents</h2>
-                <p>L'application génère automatiquement tous les documents nécessaires à votre activité.</p>
-
-                <h3>Documents disponibles</h3>
-                <ul class="feature-list">
-                    <li><i class="fas fa-receipt"></i> <strong>Factures de vente :</strong> Avec détail des lots et traçabilité</li>
-                    <li><i class="fas fa-file-invoice"></i> <strong>Bons d'achat :</strong> Commandes et réceptions</li>
-                    <li><i class="fas fa-chart-bar"></i> <strong>Rapports de stock :</strong> État des stocks par période</li>
-                    <li><i class="fas fa-exclamation-circle"></i> <strong>Alertes :</strong> Listes des produits en rupture ou périmés</li>
-                </ul>
-
-                <h3>Personnalisation</h3>
-                <p>Le pharmacien peut personnaliser l'apparence des documents :</p>
-                <ul class="feature-list">
-                    <li><i class="fas fa-heading"></i> En-tête personnalisé avec logo</li>
-                    <li><i class="fas fa-info-circle"></i> Informations de la pharmacie</li>
-                    <li><i class="fas fa-stamp"></i> Cachet numérique ou texte</li>
-                    <li><i class="fas fa-palette"></i> Couleurs et mise en forme</li>
-                </ul>
-
-                <div class="alert info">
-                    <i class="fas fa-print"></i>
-                    <div>
-                        <strong>Impression :</strong> Tous les documents sont optimisés pour l'impression A4 et s'adaptent automatiquement aux imprimantes ticket pour les factures.
-                    </div>
-                </div>
-            </section>
-
-            <!-- Paramètres -->
-            <section id="parametres" class="section">
-                <h2><i class="fas fa-cog"></i> Paramètres</h2>
-                
-                <div class="alert warning">
-                    <i class="fas fa-lock"></i>
-                    <div>
-                        <strong>Accès restreint :</strong> La plupart des paramètres sont accessibles uniquement aux pharmaciens.
-                    </div>
-                </div>
-
-                <h3>Paramètres utilisateur</h3>
-                <p>Chaque utilisateur peut personnaliser :</p>
-                <ul class="feature-list">
-                    <li><i class="fas fa-user"></i> Informations personnelles (nom, email)</li>
-                    <li><i class="fas fa-key"></i> Modification du mot de passe</li>
-                    <li><i class="fas fa-bell"></i> Préférences de notifications</li>
-                </ul>
-
-                <h3>Paramètres de la pharmacie (Docteur)</h3>
-                <ul class="feature-list">
-                    <li><i class="fas fa-store"></i> <strong>Informations générales :</strong> Nom, adresse, téléphone</li>
-                    <li><i class="fas fa-users-cog"></i> <strong>Gestion des utilisateurs :</strong> Invitations, rôles, permissions</li>
-                    <li><i class="fas fa-file-alt"></i> <strong>Personnalisation documents :</strong> En-têtes, cachets, formats</li>
-                    <li><i class="fas fa-database"></i> <strong>Sauvegarde :</strong> Export des données, restauration</li>
-                </ul>
-
-                <h3>Gestion des invitations</h3>
-                <p>Le pharmacien peut gérer l'équipe via le système d'invitations :</p>
-                <div class="steps">
-                    <div class="step">
-                        <h4>Créer une invitation</h4>
-                        <p>Générez un code d'invitation pour un nouvel employé en précisant son rôle et ses permissions.</p>
-                    </div>
-
-                    <div class="step">
-                        <h4>Partager le code</h4>
-                        <p>Transmettez le code de 8 caractères à la personne concernée (SMS, email, etc.).</p>
-                    </div>
-
-                    <div class="step">
-                        <h4>Suivi des invitations</h4>
-                        <p>Consultez l'état des invitations (en attente, utilisée, expirée) et gérez les accès.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- FAQ -->
-            <section id="faq" class="section">
-                <h2><i class="fas fa-question-circle"></i> Questions fréquentes</h2>
-
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Comment scanner un code-barres ?</span>
-                        <i class="fas fa-plus"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Dans le module ventes, cliquez sur l'icône caméra ou utilisez directement votre douchette USB. L'application reconnaît automatiquement les codes-barres et propose les produits correspondants.</p>
-                        <p><strong>Astuce :</strong> Assurez-vous d'avoir autorisé l'accès à la caméra dans votre navigateur.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Que faire si je me trompe dans une vente ?</span>
-                        <i class="fas fa-plus"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Contactez immédiatement le pharmacien qui pourra annuler la vente erronée. L'annulation remet automatiquement à jour le stock.</p>
-                        <p><strong>Important :</strong> Plus vite l'erreur est signalée, plus facile sera la correction.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Comment consulter les ventes d'une période précise ?</span>
-                        <i class="fas fa-plus"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Sur le tableau de bord, utilisez les filtres de période en haut de l'écran. Vous pouvez choisir "Aujourd'hui", "Cette semaine", "Ce mois" ou définir une période personnalisée avec les dates de début et fin.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Pourquoi certains produits apparaissent en rouge dans le stock ?</span>
-                        <i class="fas fa-plus"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Les produits en rouge indiquent :</p>
-                        <ul>
-                            <li><strong>Rouge foncé :</strong> Rupture de stock (quantité = 0)</li>
-                            <li><strong>Orange :</strong> Stock faible (moins de 5 unités)</li>
-                            <li><strong>Rouge clair :</strong> Proche de la date de péremption</li>
-                        </ul>
-                        <p>Ces alertes vous aident à gérer votre inventaire efficacement.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Comment imprimer une facture ancienne ?</span>
-                        <i class="fas fa-plus"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Rendez-vous dans l'historique des ventes, recherchez la transaction concernée et cliquez sur "Imprimer". Toutes les factures restent disponibles pour réimpression.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>L'application fonctionne-t-elle hors connexion ?</span>
-                        <i class="fas fa-plus"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>L'application nécessite une connexion internet pour fonctionner car elle synchronise les données en temps réel entre tous les utilisateurs. En cas de coupure temporaire, les données sont sauvegardées localement et synchronisées dès le retour de la connexion.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Comment changer mon mot de passe ?</span>
-                        <i class="fas fa-plus"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Cliquez sur votre nom en haut à droite, puis "Profil". Vous pouvez y modifier votre mot de passe, vos informations personnelles et vos préférences.</p>
-                    </div>
-                </div>
-            </section>
-        </main>
+  <!-- Header -->
+  <header class="header" role="banner">
+    <div class="container-fluid" aria-live="polite">
+      <h1><i class="fas fa-hospital"></i> Guide Utilisateur</h1>
+      <p>Système de Gestion de Pharmacie – Documentation d’utilisation (version React)</p>
     </div>
+  </header>
 
-    <!-- Back to Top Button -->
-    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
-        <i class="fas fa-chevron-up"></i>
-    </button>
+  <!-- Navigation -->
+  <nav class="nav-container" role="navigation" aria-label="Navigation principale">
+    <div class="nav">
+      <div class="brand" aria-label="Nom de l’application">💊 Pharma Gestion Pro</div>
+      <button class="nav-toggle" id="navToggle" aria-controls="navMenu" aria-expanded="false" aria-label="Ouvrir le menu">
+        <i class="fas fa-bars"></i>
+      </button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#getting-started">Démarrage</a></li>
+        <li><a href="#modules">Modules</a></li>
+        <li><a href="#utilisation">Utilisation</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+  </nav>
 
-    <script>
-        // Navigation mobile
-        function toggleNav() {
-            const menu = document.getElementById('navMenu');
-            menu.classList.toggle('active');
-        }
+  <!-- Main -->
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar" aria-label="Sommaire">
+      <h3><i class="fas fa-list"></i> Sommaire</h3>
+      <ul>
+        <li><a href="#introduction"><i class="fas fa-circle-info"></i> Introduction</a></li>
+        <li><a href="#getting-started"><i class="fas fa-play"></i> Premier démarrage</a></li>
+        <li><a href="#roles"><i class="fas fa-users"></i> Rôles utilisateurs</a></li>
+        <li><a href="#connexion"><i class="fas fa-right-to-bracket"></i> Connexion</a></li>
+        <li><a href="#dashboard"><i class="fas fa-chart-line"></i> Tableau de bord</a></li>
+        <li><a href="#ventes"><i class="fas fa-cart-shopping"></i> Effectuer des ventes</a></li>
+        <li><a href="#achats"><i class="fas fa-truck"></i> Gérer les achats</a></li>
+        <li><a href="#stock"><i class="fas fa-boxes-stacked"></i> Consulter le stock</a></li>
+        <li><a href="#impressions"><i class="fas fa-print"></i> Impressions</a></li>
+        <li><a href="#parametres"><i class="fas fa-gear"></i> Paramètres</a></li>
+        <li><a href="#faq"><i class="fas fa-circle-question"></i> Questions fréquentes</a></li>
+      </ul>
+    </aside>
 
-        // Smooth scroll vers section
-        function scrollToSection(sectionId) {
-            const element = document.getElementById(sectionId);
-            if (element) {
-                element.scrollIntoView({ 
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-                // Fermer menu mobile
-                const navMenu = document.getElementById('navMenu');
-                if (navMenu) {
-                    navMenu.classList.remove('active');
-                }
-            }
-        }
+    <!-- Content -->
+    <main class="main-content" id="maincontent">
+      <!-- Introduction -->
+      <section id="introduction" class="section fade-in" tabindex="-1" aria-labelledby="h-intro">
+        <h2 id="h-intro"><i class="fas fa-circle-info"></i> Introduction</h2>
+        <p>Ce guide explique comment utiliser votre application React (Pharma Gestion) : navigation, ventes, achats, stock et impressions. La page est responsive (PC / tablette / téléphone) et accessible.</p>
 
-        // Scroll to top
-        function scrollToTop() {
-            window.scrollTo({ 
-                top: 0, 
-                behavior: 'smooth' 
-            });
-        }
+      <div class="card-grid" role="list">
+        <div class="feature-card" role="listitem">
+          <i class="fas fa-chart-line"></i>
+          <h4>Suivi en temps réel</h4>
+          <p>Statistiques et indicateurs clefs mis à jour automatiquement.</p>
+        </div>
+        <div class="feature-card" role="listitem">
+          <i class="fas fa-mobile-screen-button"></i>
+          <h4>Interface intuitive</h4>
+          <p>Utilisable sur ordinateur, tablette et mobile.</p>
+        </div>
+        <div class="feature-card" role="listitem">
+          <i class="fas fa-shield-halved"></i>
+          <h4>Sécurisé</h4>
+          <p>Accès et permissions par rôle (Docteur / Vendeuse).</p>
+        </div>
+        <div class="feature-card" role="listitem">
+          <i class="fas fa-arrows-rotate"></i>
+          <h4>Synchronisation</h4>
+          <p>Multi-appareils et synchronisation temps réel.</p>
+        </div>
+      </div>
+      </section>
 
-        // FAQ Toggle
-        function toggleFaq(element) {
-            const answer = element.nextElementSibling;
-            const icon = element.querySelector('i');
-            
-            // Fermer les autres FAQ
-            document.querySelectorAll('.faq-answer').forEach(faq => {
-                if (faq !== answer && faq.classList.contains('open')) {
-                    faq.classList.remove('open');
-                    faq.previousElementSibling.querySelector('i').className = 'fas fa-plus';
-                }
-            });
-            
-            // Toggle current FAQ
-            answer.classList.toggle('open');
-            icon.className = answer.classList.contains('open') ? 'fas fa-minus' : 'fas fa-plus';
-        }
+      <!-- Premier démarrage -->
+      <section id="getting-started" class="section" tabindex="-1" aria-labelledby="h-start">
+        <h2 id="h-start"><i class="fas fa-play"></i> Premier démarrage</h2>
+        <p>Accédez à l’application avec un code d’invitation généré par le pharmacien (ou créez la société si vous êtes Docteur).</p>
 
-        // Navigation active state
-        function updateActiveNav() {
-            const sections = document.querySelectorAll('.section');
-            const navLinks = document.querySelectorAll('.nav-menu a, .sidebar a');
-            
-            let currentSection = '';
-            
-            sections.forEach(section => {
-                const rect = section.getBoundingClientRect();
-                if (rect.top <= 150 && rect.bottom >= 150) {
-                    currentSection = section.id;
-                }
-            });
-            
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${currentSection}`) {
-                    link.classList.add('active');
-                }
-            });
-        }
+        <div class="steps">
+          <div class="step">
+            <h4>Inscription avec code d’invitation</h4>
+            <p>Sur la page d’inscription, entrez le code à 6–8 caractères. L’app vous relie à la bonne pharmacie.</p>
+          </div>
+          <div class="step">
+            <h4>Création du compte</h4>
+            <p>Renseignez nom, email et mot de passe. Le rôle (Docteur / Vendeuse) provient de l’invitation.</p>
+          </div>
+          <div class="step">
+            <h4>Première connexion</h4>
+            <p>Connectez-vous : vous arrivez sur le tableau de bord de votre pharmacie.</p>
+          </div>
+        </div>
 
-        // Back to top visibility
-        function updateBackToTop() {
-            const button = document.getElementById('backToTop');
-            if (window.scrollY > 300) {
-                button.classList.add('visible');
-            } else {
-                button.classList.remove('visible');
-            }
-        }
+        <div class="alert info">
+          <i class="fas fa-circle-info" aria-hidden="true"></i>
+          <div><strong>Important :</strong> Sans code valide, pas de création de compte employé. Demandez un code au pharmacien.</div>
+        </div>
+      </section>
 
-        // Animation on scroll
-        function animateOnScroll() {
-            const elements = document.querySelectorAll('.section');
-            elements.forEach(element => {
-                const rect = element.getBoundingClientRect();
-                if (rect.top < window.innerHeight * 0.8) {
-                    element.classList.add('fade-in');
-                }
-            });
-        }
+      <!-- Rôles -->
+      <section id="roles" class="section" tabindex="-1" aria-labelledby="h-roles">
+        <h2 id="h-roles"><i class="fas fa-users"></i> Rôles utilisateurs</h2>
+        <p>Deux profils principaux existent.</p>
 
-        // Event listeners
-        window.addEventListener('scroll', () => {
-            updateActiveNav();
-            updateBackToTop();
-            animateOnScroll();
+        <div class="card-grid">
+          <div class="card role-card docteur">
+            <h4><i class="fas fa-user-doctor"></i> Docteur (Pharmacien)</h4>
+            <p>Accès complet à toutes les fonctionnalités.</p>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i> Dashboard & statistiques</li>
+              <li><i class="fas fa-check"></i> Ventes / Achats</li>
+              <li><i class="fas fa-check"></i> Stock & transferts</li>
+              <li><i class="fas fa-check"></i> Paramètres & utilisateurs</li>
+              <li><i class="fas fa-check"></i> Rapports & exports</li>
+            </ul>
+          </div>
+
+          <div class="card role-card vendeuse">
+            <h4><i class="fas fa-user"></i> Vendeuse</h4>
+            <p>Accès optimisé pour l’activité de vente.</p>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i> Module ventes complet</li>
+              <li><i class="fas fa-check"></i> Consultation du stock</li>
+              <li><i class="fas fa-check"></i> Impression des documents</li>
+              <li><i class="fas fa-check"></i> Statistiques personnelles</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="alert success">
+          <i class="fas fa-key" aria-hidden="true"></i>
+          <div><strong>Permissions étendues :</strong> le pharmacien peut accorder des permissions supplémentaires aux vendeuses.</div>
+        </div>
+      </section>
+
+      <!-- Connexion -->
+      <section id="connexion" class="section" tabindex="-1" aria-labelledby="h-login">
+        <h2 id="h-login"><i class="fas fa-right-to-bracket"></i> Connexion & navigation</h2>
+
+        <h3>Se connecter</h3>
+        <div class="steps">
+          <div class="step">
+            <h4>Page de connexion</h4>
+            <p>Saisissez email et mot de passe.</p>
+          </div>
+          <div class="step">
+            <h4>Accès à la bonne société</h4>
+            <p>Si vous avez plusieurs pharmacies, choisissez la société avant d’entrer.</p>
+          </div>
+        </div>
+
+        <h3>Navigation</h3>
+        <ul class="feature-list">
+          <li><i class="fas fa-house"></i> <strong>Accueil :</strong> Dashboard et stats</li>
+          <li><i class="fas fa-cart-shopping"></i> <strong>Ventes :</strong> ventes & factures</li>
+          <li><i class="fas fa-truck"></i> <strong>Achats :</strong> commandes & réceptions</li>
+          <li><i class="fas fa-boxes-stacked"></i> <strong>Stock :</strong> inventaire & lots</li>
+          <li><i class="fas fa-gear"></i> <strong>Paramètres :</strong> configuration</li>
+        </ul>
+      </section>
+
+      <!-- Dashboard -->
+      <section id="dashboard" class="section" tabindex="-1" aria-labelledby="h-dash">
+        <h2 id="h-dash"><i class="fas fa-chart-line"></i> Utiliser le tableau de bord</h2>
+        <p>Vue d’ensemble de l’activité.</p>
+
+        <h3>Infos principales</h3>
+        <ul class="feature-list">
+          <li><i class="fas fa-receipt"></i> Chiffre d’affaires</li>
+          <li><i class="fas fa-list-check"></i> Nombre de ventes</li>
+          <li><i class="fas fa-truck-fast"></i> Montant des achats</li>
+          <li><i class="fas fa-wallet"></i> Caisse</li>
+          <li><i class="fas fa-triangle-exclamation"></i> Stock critique</li>
+        </ul>
+
+        <h3>Filtres de période</h3>
+        <ul class="feature-list">
+          <li><i class="fas fa-calendar-day"></i> Aujourd’hui</li>
+          <li><i class="fas fa-calendar-week"></i> Cette semaine</li>
+          <li><i class="fas fa-calendar"></i> Ce mois</li>
+          <li><i class="fas fa-calendar-check"></i> Période personnalisée</li>
+        </ul>
+
+        <div class="alert info">
+          <i class="fas fa-circle-info" aria-hidden="true"></i>
+          <div><strong>Multi-stock :</strong> double-cliquez une carte pour basculer « Stock 1 » / « Stock 1 + 2 ».</div>
+        </div>
+      </section>
+
+      <!-- Ventes -->
+      <section id="ventes" class="section" tabindex="-1" aria-labelledby="h-ventes">
+        <h2 id="h-ventes"><i class="fas fa-cart-shopping"></i> Effectuer des ventes</h2>
+        <p>Enregistre les transactions et met à jour les lots.</p>
+
+        <h3>Processus</h3>
+        <div class="steps">
+          <div class="step"><h4>Rechercher un produit</h4><p>Recherche par nom ou scan code-barres (caméra/douchette).</p></div>
+          <div class="step"><h4>Sélectionner le lot</h4><p>Lots triés par date d’expiration (le plus proche d’abord).</p></div>
+          <div class="step"><h4>Quantité</h4><p>Contrôle automatique des stocks.</p></div>
+          <div class="step"><h4>Valider</h4><p>Choisissez le paiement et validez. Le stock est décrémenté.</p></div>
+        </div>
+
+        <h3>Fonctionnalités</h3>
+        <ul class="feature-list">
+          <li><i class="fas fa-barcode"></i> Scan caméra / USB</li>
+          <li><i class="fas fa-layer-group"></i> Gestion multi-lots</li>
+          <li><i class="fas fa-percent"></i> Remises</li>
+          <li><i class="fas fa-file-invoice"></i> Factures</li>
+          <li><i class="fas fa-rotate-left"></i> Annulation (permission requise)</li>
+        </ul>
+
+        <div class="alert warning">
+          <i class="fas fa-triangle-exclamation" aria-hidden="true"></i>
+          <div><strong>Attention :</strong> une vente validée met à jour les stocks. Vérifiez les quantités.</div>
+        </div>
+      </section>
+
+      <!-- Achats -->
+      <section id="achats" class="section" tabindex="-1" aria-labelledby="h-achats">
+        <h2 id="h-achats"><i class="fas fa-truck"></i> Gérer les achats</h2>
+        <div class="alert danger">
+          <i class="fas fa-lock" aria-hidden="true"></i>
+          <div><strong>Accès restreint :</strong> réservé au Docteur (ou vendeuse avec permission).</div>
+        </div>
+
+        <h3>Bon d’achat</h3>
+        <div class="steps">
+          <div class="step"><h4>Infos générales</h4><p>Fournisseur, date, stock de destination (S1/S2).</p></div>
+          <div class="step"><h4>Ajouter des articles</h4><p>Nom, quantité, prix unitaire estimé.</p></div>
+          <div class="step"><h4>Enregistrer</h4><p>Le bon apparaît en « Commandé ».</p></div>
+        </div>
+
+        <h3>Réception</h3>
+        <div class="steps">
+          <div class="step"><h4>Ouvrir le bon</h4><p>Cliquez « Réceptionner ».</p></div>
+          <div class="step"><h4>Quantités / lots</h4><p>Saisissez quantités réelles, n° de lot, dates de péremption.</p></div>
+          <div class="step"><h4>Valider</h4><p>Le stock est mis à jour en temps réel.</p></div>
+        </div>
+      </section>
+
+      <!-- Stock -->
+      <section id="stock" class="section" tabindex="-1" aria-labelledby="h-stock">
+        <h2 id="h-stock"><i class="fas fa-boxes-stacked"></i> Consulter le stock</h2>
+        <p>Inventaire, filtres et actions selon permissions.</p>
+
+        <h3>Vue d’ensemble</h3>
+        <ul class="feature-list">
+          <li><i class="fas fa-magnifying-glass"></i> Recherche par nom</li>
+          <li><i class="fas fa-filter"></i> Filtres par stock, statut, date</li>
+          <li><i class="fas fa-arrow-up-wide-short"></i> Tri par nom, quantité, péremption</li>
+          <li><i class="fas fa-bell"></i> Alertes rupture / proche péremption</li>
+        </ul>
+
+        <h3>Informations affichées</h3>
+        <ul class="feature-list">
+          <li><i class="fas fa-tag"></i> Nom / référence</li>
+          <li><i class="fas fa-warehouse"></i> Quantités par stock</li>
+          <li><i class="fas fa-calendar-day"></i> Dates de péremption</li>
+          <li><i class="fas fa-barcode"></i> Numéro de lot / code-barres</li>
+          <li><i class="fas fa-dollar-sign"></i> Prix achat / vente</li>
+        </ul>
+
+        <h3>Avancé (Docteur)</h3>
+        <ul class="feature-list">
+          <li><i class="fas fa-right-left"></i> Transferts S1 ⇄ S2</li>
+          <li><i class="fas fa-rotate-left"></i> Retours fournisseurs</li>
+          <li><i class="fas fa-pen-to-square"></i> Corrections d’inventaire</li>
+          <li><i class="fas fa-file-export"></i> Export Excel</li>
+        </ul>
+      </section>
+
+      <!-- Impressions -->
+      <section id="impressions" class="section" tabindex="-1" aria-labelledby="h-print">
+        <h2 id="h-print"><i class="fas fa-print"></i> Impressions & documents</h2>
+        <p>Documents générés automatiquement par l’application.</p>
+
+        <h3>Documents</h3>
+        <ul class="feature-list">
+          <li><i class="fas fa-receipt"></i> Factures de vente (traçabilité des lots)</li>
+          <li><i class="fas fa-file-invoice"></i> Bons d’achat</li>
+          <li><i class="fas fa-chart-bar"></i> Rapports de stock</li>
+          <li><i class="fas fa-circle-exclamation"></i> Alertes ruptures/péremptions</li>
+        </ul>
+
+        <h3>Personnalisation</h3>
+        <ul class="feature-list">
+          <li><i class="fas fa-heading"></i> En-têtes avec logo</li>
+          <li><i class="fas fa-circle-info"></i> Coordonnées de la pharmacie</li>
+          <li><i class="fas fa-stamp"></i> Cachet image/texte</li>
+          <li><i class="fas fa-palette"></i> Couleurs & mise en page</li>
+        </ul>
+
+        <div class="alert info">
+          <i class="fas fa-print" aria-hidden="true"></i>
+          <div><strong>Impression :</strong> optimisé A4, compatible imprimantes ticket.</div>
+        </div>
+      </section>
+
+      <!-- Paramètres -->
+      <section id="parametres" class="section" tabindex="-1" aria-labelledby="h-settings">
+        <h2 id="h-settings"><i class="fas fa-gear"></i> Paramètres</h2>
+        <div class="alert warning">
+          <i class="fas fa-lock" aria-hidden="true"></i>
+          <div><strong>Accès restreint :</strong> la plupart des réglages sont réservés au Docteur.</div>
+        </div>
+
+        <h3>Paramètres utilisateur</h3>
+        <ul class="feature-list">
+          <li><i class="fas fa-user"></i> Profil (nom, email)</li>
+          <li><i class="fas fa-key"></i> Mot de passe</li>
+          <li><i class="fas fa-bell"></i> Notifications</li>
+        </ul>
+
+        <h3>Paramètres de la pharmacie</h3>
+        <ul class="feature-list">
+          <li><i class="fas fa-store"></i> Nom, adresse, téléphone</li>
+          <li><i class="fas fa-users-gear"></i> Invitations, rôles, permissions</li>
+          <li><i class="fas fa-file-lines"></i> En-têtes, cachets, formats</li>
+          <li><i class="fas fa-database"></i> Export / restauration</li>
+        </ul>
+
+        <h3>Gestion des invitations</h3>
+        <div class="steps">
+          <div class="step"><h4>Créer</h4><p>Générez un code d’invitation en précisant rôle & permissions.</p></div>
+          <div class="step"><h4>Partager</h4><p>Envoyez le code (SMS/Email/WhatsApp).</p></div>
+          <div class="step"><h4>Suivre</h4><p>Statuts : en attente / utilisée / expirée.</p></div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section id="faq" class="section" tabindex="-1" aria-labelledby="h-faq">
+        <h2 id="h-faq"><i class="fas fa-circle-question"></i> Questions fréquentes</h2>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button" aria-expanded="false">
+            <span>Comment scanner un code-barres ?</span><i class="fas fa-plus"></i>
+          </button>
+          <div class="faq-answer" role="region" aria-hidden="true">
+            <p>Dans Ventes, cliquez l’icône caméra ou utilisez une douchette USB.</p>
+            <p><strong>Astuce :</strong> autorisez l’accès à la caméra.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button" aria-expanded="false">
+            <span>Que faire si je me trompe dans une vente ?</span><i class="fas fa-plus"></i>
+          </button>
+          <div class="faq-answer" role="region" aria-hidden="true">
+            <p>Prévenez le pharmacien : il peut annuler la vente et rétablir le stock.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button" aria-expanded="false">
+            <span>Comment filtrer les ventes sur une période ?</span><i class="fas fa-plus"></i>
+          </button>
+          <div class="faq-answer" role="region" aria-hidden="true">
+            <p>Sur le Dashboard, utilisez les filtres de période (jour/semaine/mois/personnalisée).</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button" aria-expanded="false">
+            <span>Pourquoi certains produits sont en rouge dans le stock ?</span><i class="fas fa-plus"></i>
+          </button>
+          <div class="faq-answer" role="region" aria-hidden="true">
+            <p>Rupture, faible quantité, ou proche de péremption.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button" aria-expanded="false">
+            <span>Puis-je réimprimer une facture ancienne ?</span><i class="fas fa-plus"></i>
+          </button>
+          <div class="faq-answer" role="region" aria-hidden="true">
+            <p>Oui, via l’historique des ventes : « Imprimer ».</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button" aria-expanded="false">
+            <span>L’application fonctionne-t-elle hors-ligne ?</span><i class="fas fa-plus"></i>
+          </button>
+          <div class="faq-answer" role="region" aria-hidden="true">
+            <p>Connexion requise ; en cas de coupure courte, les données sont resynchronisées au retour du réseau.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button" aria-expanded="false">
+            <span>Comment changer mon mot de passe ?</span><i class="fas fa-plus"></i>
+          </button>
+          <div class="faq-answer" role="region" aria-hidden="true">
+            <p>Menu profil (en haut à droite) → « Profil » → modifier le mot de passe.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" id="backToTop" aria-label="Revenir en haut">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <script>
+    /* ===== Helpers ===== */
+    const $ = (sel, root=document) => root.querySelector(sel);
+    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+    /* ===== Mobile nav ===== */
+    const navToggle = $('#navToggle');
+    const navMenu = $('#navMenu');
+    navToggle?.addEventListener('click', () => {
+      const open = navMenu.classList.toggle('active');
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    /* Close menu when clicking outside (mobile) */
+    document.addEventListener('click', (e) => {
+      if (!navMenu || !navToggle) return;
+      const inside = navMenu.contains(e.target) || navToggle.contains(e.target);
+      if (!inside) {
+        navMenu.classList.remove('active');
+        navToggle.setAttribute('aria-expanded','false');
+      }
+    });
+
+    /* ===== Smooth anchor & keep hash ===== */
+    const allLinks = $$('.nav-menu a, .sidebar a');
+    allLinks.forEach(a => {
+      a.addEventListener('click', (e) => {
+        const href = a.getAttribute('href') || '';
+        if (!href.startsWith('#')) return;
+        e.preventDefault();
+        const id = href.slice(1);
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.scrollIntoView({ behavior:'smooth', block:'start' });
+        history.replaceState(null, '', '#' + id);
+        navMenu?.classList.remove('active');
+        navToggle?.setAttribute('aria-expanded','false');
+        /* Move focus for accessibility after scroll */
+        setTimeout(() => el.focus({ preventScroll:true }), 300);
+      });
+    });
+
+    /* ===== Back to top ===== */
+    const backBtn = $('#backToTop');
+    function updateBackBtn(){ window.scrollY > 300 ? backBtn.classList.add('visible') : backBtn.classList.remove('visible'); }
+    backBtn?.addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
+    window.addEventListener('scroll', updateBackBtn, { passive:true });
+    updateBackBtn();
+
+    /* ===== FAQ toggle (accessible) ===== */
+    $$('.faq-item').forEach(item => {
+      const btn = $('.faq-question', item);
+      const panel = $('.faq-answer', item);
+      btn.addEventListener('click', () => {
+        const open = panel.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        panel.setAttribute('aria-hidden', open ? 'false' : 'true');
+        $('.fa-plus, .fa-minus', btn)?.classList.replace(open?'fa-plus':'fa-minus', open?'fa-minus':'fa-plus');
+      });
+    });
+
+    /* ===== Active section (IntersectionObserver + fallback) ===== */
+    const sections = $$('.section');
+    const navAndSideLinks = $$('.nav-menu a, .sidebar a');
+
+    function setActive(id){
+      navAndSideLinks.forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+      });
+    }
+
+    if ('IntersectionObserver' in window){
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting){
+            setActive(entry.target.id);
+          }
         });
-
-        // Initial calls
-        document.addEventListener('DOMContentLoaded', () => {
-            updateActiveNav();
-            animateOnScroll();
+      }, { rootMargin: '-40% 0px -55% 0px', threshold: 0.01 });
+      sections.forEach(s => io.observe(s));
+    } else {
+      /* Fallback scroll-based */
+      const onScroll = () => {
+        let current = sections[0]?.id;
+        sections.forEach(sec => {
+          const rect = sec.getBoundingClientRect();
+          if (rect.top <= 140 && rect.bottom >= 140) current = sec.id;
         });
+        setActive(current);
+      };
+      window.addEventListener('scroll', onScroll, { passive:true });
+      onScroll();
+    }
 
-        // Fermer menu mobile au clic extérieur
-        document.addEventListener('click', (e) => {
-            const nav = document.getElementById('navMenu');
-            const toggle = document.querySelector('.nav-toggle');
-            
-            if (!nav.contains(e.target) && !toggle.contains(e.target)) {
-                nav.classList.remove('active');
-            }
-        });
+    /* ===== Animate on appear ===== */
+    function animateOnScroll(){
+      sections.forEach(el => {
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight * 0.85) el.classList.add('fade-in');
+      });
+    }
+    window.addEventListener('scroll', animateOnScroll, { passive:true });
+    document.addEventListener('DOMContentLoaded', animateOnScroll);
 
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                document.getElementById('navMenu').classList.remove('active');
-                // Fermer toutes les FAQ
-                document.querySelectorAll('.faq-answer.open').forEach(faq => {
-                    faq.classList.remove('open');
-                    faq.previousElementSibling.querySelector('i').className = 'fas fa-plus';
-                });
-            }
+    /* ===== Keyboard: ESC closes menu & collapses FAQ ===== */
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape'){
+        navMenu?.classList.remove('active');
+        navToggle?.setAttribute('aria-expanded','false');
+        $$('.faq-answer.open').forEach(p => {
+          p.classList.remove('open');
+          p.setAttribute('aria-hidden','true');
         });
-    </script>
+        $$('.faq-question[aria-expanded="true"]').forEach(b => b.setAttribute('aria-expanded','false'));
+      }
+    });
+
+    /* ===== If a hash is present on load, scroll to it nicely ===== */
+    window.addEventListener('load', () => {
+      const id = location.hash?.slice(1);
+      const target = id && document.getElementById(id);
+      if (target) {
+        target.scrollIntoView({ behavior:'smooth', block:'start' });
+        setTimeout(() => target.focus({ preventScroll:true }), 350);
+      }
+    });
+  </script>
 </body>
-</html><!
+</html>
